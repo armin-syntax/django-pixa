@@ -1,0 +1,47 @@
+.tags-page {
+  /* Box Model - Dimensions */
+  padding: 4rem 0 6rem;
+}
+
+.tags-heading {
+  /* Box Model - Dimensions */
+  max-width: 720px;
+  margin-bottom: 2rem;
+}
+
+.tags-heading p {
+  /* Box Model - Dimensions */
+  margin: 0;
+
+  /* Typography */
+  color: var(--muted);
+}
+
+.tag-cloud {
+  /* Display & Flex */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5625rem;
+}
+
+.tag-link {
+  /* Box Model - Dimensions */
+  padding: 0.5625rem 0.8125rem;
+
+  /* Box Model - Border */
+  border: 1px solid var(--line);
+  border-radius: 999px;
+
+  /* Typography */
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.tag-link:hover {
+  /* Box Model - Border */
+  border-color: #ccc;
+
+  /* Typography */
+  color: var(--text);
+}

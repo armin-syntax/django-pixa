@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login — Pixa</title>
+    <meta name="description" content="Pixa is a minimal visual discovery platform for photography and personal collections.">
+    <link rel="stylesheet" href="assets/css/public.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
+  </head>
+  <body>
+    <!--
+    <div class="messages-container" aria-live="polite">
+      <div class="alert alert-success">Success message</div>
+      <div class="alert alert-info">Information message</div>
+      <div class="alert alert-warning">Warning message</div>
+      <div class="alert alert-danger">Error message</div>
+    </div>
+    -->
+    <header class="topbar">
+      <a class="logo" href="index.html" aria-label="Pixa home">p</a>
+      <form class="search-form" action="" method="GET" role="search">
+        <input class="search" type="search" placeholder="Search..." aria-label="Search">
+      </form>
+      <nav class="nav">
+        <a href="index.html">Explore</a>
+        <a href="about.html">About</a>
+      </nav>
+      <a class="avatar" href="profile.html" aria-label="Profile">A</a>
+    </header>
+
+    <main class="auth-wrap">
+      <section class="auth-card">
+        <div class="eyebrow">Welcome back</div>
+        <h1>Sign in</h1>
+        <p class="sub">Sign in to continue to your collection.</p>
+        <form action="" method="POST">
+          <!-- <div class="errors-container"><div class="alert alert-danger">Error message</div><div class="alert alert-info">Information message</div></div> -->
+          <div class="form-group">
+            <label for="identity">Username or email</label>
+            <input id="identity" name="identity" class="field" type="text" placeholder="Username or email" autocomplete="username" required="">
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" name="password" class="field" type="password" placeholder="Your password" autocomplete="current-password" required="">
+          </div>
+
+          <div class="form-links">
+            <a href="forgot_password.html">Forgot password?</a>
+          </div>
+
+          <button class="btn btn-red full" type="submit">Sign in</button>
+        </form>
+
+        <div class="auth-foot">
+          Don't have an account?
+          <a href="register.html">Create one</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <span>© 2026 Pixa</span>
+        <span>
+          <a href="about.html">About</a>
+          <span class="footer-dot">·</span>
+          <a href="login.html">Login</a>
+          <span class="footer-dot">·</span>
+          <a href="register.html">Sign up</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="assets/js/public.js">
+    </script>
+  </body>
+</html>

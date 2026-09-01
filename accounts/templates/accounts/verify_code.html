@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Verify code — Pixa</title>
+    <meta name="description" content="Pixa is a minimal visual discovery platform for photography and personal collections.">
+    <link rel="stylesheet" href="assets/css/public.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
+  </head>
+  <body>
+    <!--
+    <div class="messages-container" aria-live="polite">
+      <div class="alert alert-success">Success message</div>
+      <div class="alert alert-info">Information message</div>
+      <div class="alert alert-warning">Warning message</div>
+      <div class="alert alert-danger">Error message</div>
+    </div>
+    -->
+    <header class="topbar">
+      <a class="logo" href="index.html" aria-label="Pixa home">p</a>
+      <form class="search-form" action="" method="GET" role="search">
+        <input class="search" type="search" placeholder="Search..." aria-label="Search">
+      </form>
+      <nav class="nav">
+        <a href="index.html">Explore</a>
+        <a href="about.html">About</a>
+      </nav>
+      <a class="avatar" href="profile.html" aria-label="Profile">A</a>
+    </header>
+
+    <main class="auth-wrap">
+      <section class="auth-card">
+        <div class="eyebrow">Check your email</div>
+        <h1>Enter verification code</h1>
+        <p class="sub">Enter the six-digit code sent to your email.</p>
+        <form action="reset_password.html" method="POST">
+          <!-- <div class="errors-container"><div class="alert alert-danger">Error message</div><div class="alert alert-info">Information message</div></div> -->
+          <div class="form-group">
+            <label for="code">Verification code</label>
+            <input id="code" name="code" class="field code-input" type="text" inputmode="numeric" maxlength="6" placeholder="000000" autocomplete="one-time-code" required="">
+          </div>
+
+          <p class="password-note">A verification code has been sent to the email associated with your account.</p>
+
+          <button class="btn btn-red full" type="submit">Verify code</button>
+        </form>
+
+        <div class="auth-foot">
+          <a href="forgot_password.html">Use another account</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <span>© 2026 Pixa</span>
+        <span>
+          <a href="about.html">About</a>
+          <span class="footer-dot">·</span>
+          <a href="login.html">Login</a>
+          <span class="footer-dot">·</span>
+          <a href="register.html">Sign up</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="assets/js/public.js">
+    </script>
+    <script src="assets/js/auth.js">
+    </script>
+  </body>
+</html>

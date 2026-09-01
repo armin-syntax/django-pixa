@@ -1,0 +1,86 @@
+.hero-explore {
+  /* Box Model - Dimensions */
+  padding-bottom: 1.5rem;
+}
+
+.tag-bar {
+  /* Display & Flex */
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  /* Box Model - Dimensions */
+  width: 100%;
+  padding-bottom: 1.25rem;
+
+  /* Other Visual */
+  overflow: hidden;
+}
+
+.tag-bar a {
+  /* Display & Flex */
+  flex: 0 0 auto;
+
+  /* Box Model - Dimensions */
+  min-width: 0;
+  padding: 0.3rem 0.45rem;
+
+  /* Box Model - Border */
+  border: 1px solid transparent;
+  border-radius: 999px;
+
+  /* Typography */
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 650;
+  white-space: nowrap;
+  text-align: left;
+
+  /* Other Visual */
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.tag-bar a:hover,
+.tag-bar a.active {
+  /* Box Model - Border */
+  border-color: var(--line);
+
+  /* Background */
+  background: var(--surface);
+
+  /* Typography */
+  color: var(--text);
+}
+
+.tag-bar .more-link {
+  /* Display & Flex */
+  flex: 0 0 auto;
+
+  /* Box Model - Border */
+  border-color: var(--text);
+
+  /* Typography */
+  color: var(--text);
+}
+
+@media (max-width: 760px) {
+  .tag-bar {
+    /* Display & Flex */
+    justify-content: flex-start;
+    gap: 0.35rem;
+
+    /* Other Visual */
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tag-bar::-webkit-scrollbar {
+    /* Other Visual */
+    display: none;
+  }
+
+  .tag-bar a {
+    /* Display & Flex */
+    flex: 0 0 auto;
+  }
+}

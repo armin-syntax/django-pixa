@@ -1,0 +1,225 @@
+.profile-page {
+  /* Box Model - Dimensions */
+  padding-bottom: 4.375rem;
+}
+
+.profile-head {
+  /* Display & Flex */
+  display: flex;
+  align-items: center;
+  gap: 1.625rem;
+
+  /* Box Model - Dimensions */
+  padding: 3.25rem 0 2.375rem;
+
+  /* Box Model - Border */
+  border-bottom: 1px solid var(--line);
+}
+
+.profile-avatar {
+  /* Display & Grid */
+  display: grid;
+  place-items: center;
+
+  /* Box Model - Dimensions */
+  width: 104px;
+  height: 104px;
+  flex: 0 0 auto;
+
+  /* Box Model - Border */
+  border-radius: 50%;
+
+  /* Background */
+  background: #e9eaec;
+
+  /* Typography */
+  color: #777;
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+
+.profile-info {
+  /* Display & Flex */
+  flex: 1;
+
+  /* Box Model - Dimensions */
+  min-width: 0;
+}
+
+.profile-info h1 {
+  /* Box Model - Dimensions */
+  margin: 0 0 0.4375rem;
+
+  /* Typography */
+  font-size: 2.125rem;
+}
+
+.stats {
+  /* Display & Flex */
+  display: flex;
+  gap: 1.5625rem;
+
+  /* Box Model - Dimensions */
+  margin-top: 1rem;
+
+  /* Typography */
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.stats strong {
+  /* Box Model - Dimensions */
+  margin-right: 0.25rem;
+
+  /* Typography */
+  color: var(--text);
+}
+
+.profile-actions {
+  /* Display & Flex */
+  display: flex;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+
+  /* Positioning */
+  position: relative;
+}
+
+.profile-tabs {
+  /* Box Model - Dimensions */
+  margin: 1rem 0;
+}
+
+.profile-about {
+  /* Box Model - Dimensions */
+  max-width: 720px;
+  padding: 1rem 0 4.375rem;
+}
+
+.profile-about p {
+  /* Box Model - Dimensions */
+  margin: 0;
+
+  /* Typography */
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.9;
+  white-space: pre-line;
+}
+
+.settings-menu {
+  /* Positioning */
+  position: relative;
+}
+
+.settings-menu summary {
+  /* Other Visual */
+  list-style: none;
+}
+
+.settings-menu summary::-webkit-details-marker {
+  /* Other Visual */
+  display: none;
+}
+
+.settings-menu .settings-panel {
+  /* Positioning */
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 5;
+
+  /* Box Model - Dimensions */
+  width: 170px;
+  padding: 0.35rem;
+
+  /* Box Model - Border */
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+
+  /* Background */
+  background: #fff;
+
+  /* Other Visual */
+  box-shadow: var(--shadow);
+}
+
+.settings-panel a {
+  /* Display */
+  display: block;
+
+  /* Box Model - Dimensions */
+  padding: 0.6rem 0.7rem;
+
+  /* Box Model - Border */
+  border-radius: 7px;
+
+  /* Typography */
+  font-size: 0.8125rem;
+}
+
+.settings-panel a:hover {
+  /* Background */
+  background: var(--surface);
+}
+
+.settings-panel .delete-link {
+  /* Typography */
+  color: var(--danger);
+}
+
+@media (max-width: 1000px) {
+  .profile-actions .follow-action {
+    /* Box Model - Dimensions */
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 760px) {
+  .profile-head {
+    /* Display & Flex */
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    /* Box Model - Dimensions */
+    padding-top: 2.25rem;
+  }
+
+  .profile-avatar {
+    /* Box Model - Dimensions */
+    width: 80px;
+    height: 80px;
+  }
+
+  .profile-info {
+    /* Box Model - Dimensions */
+    min-width: calc(100% - 100px);
+  }
+
+  .profile-actions {
+    /* Box Model - Dimensions */
+    width: 100%;
+  }
+
+  .profile-actions .btn {
+    /* Display & Flex */
+    flex: 1 1 calc(50% - 0.3125rem);
+  }
+
+  .profile-actions .follow-action {
+    /* Box Model - Dimensions */
+    flex-basis: 100%;
+  }
+
+  .stats {
+    /* Display & Flex */
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+  }
+
+  .settings-menu .settings-panel {
+    /* Positioning */
+    right: auto;
+    left: 0;
+  }
+}

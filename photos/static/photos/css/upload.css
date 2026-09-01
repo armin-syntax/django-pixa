@@ -1,0 +1,256 @@
+.upload-page {
+  /* Display & Flex */
+  display: flex;
+  justify-content: center;
+
+  /* Box Model - Dimensions */
+  padding: 3.75rem 1.25rem 5rem;
+}
+
+.upload-card {
+  /* Box Model - Dimensions */
+  width: min(520px, 100%);
+}
+
+.upload-heading {
+  /* Box Model - Dimensions */
+  margin-bottom: 2rem;
+
+  /* Typography */
+  text-align: center;
+}
+
+.upload-heading h1 {
+  /* Box Model - Dimensions */
+  margin-bottom: 0.5rem;
+}
+
+.upload-heading p {
+  /* Box Model - Dimensions */
+  margin: 0;
+
+  /* Typography */
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.file-field {
+  /* Positioning */
+  position: relative;
+
+  /* Display & Flex */
+  display: flex;
+  align-items: center;
+
+  /* Box Model - Dimensions */
+  width: 100%;
+  height: 48px;
+  padding: 0 0.8125rem;
+
+  /* Box Model - Border */
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+
+  /* Background */
+  background: #fff;
+
+  /* Other Visual */
+  cursor: pointer;
+}
+
+.file-field input {
+  /* Positioning */
+  position: absolute;
+  inset: 0;
+
+  /* Box Model - Dimensions */
+  width: 100%;
+  height: 100%;
+
+  /* Other Visual */
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-field span {
+  /* Box Model - Dimensions */
+  max-width: 100%;
+
+  /* Typography */
+  color: #999;
+  font-size: 0.8125rem;
+
+  /* Other Visual */
+  overflow: hidden;
+  pointer-events: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-field.has-file span {
+  /* Typography */
+  color: var(--text);
+}
+
+.upload-actions {
+  /* Display & Flex */
+  display: flex;
+  gap: 0.625rem;
+
+  /* Box Model - Dimensions */
+  margin-top: 1.75rem;
+}
+
+.upload-actions .btn {
+  /* Display & Flex */
+  flex: 1;
+}
+
+.tags-input {
+  /* Display & Flex */
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+
+  /* Box Model - Dimensions */
+  min-height: 48px;
+  padding: 0.375rem 0.6875rem;
+
+  /* Box Model - Border */
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+
+  /* Background */
+  background: #fff;
+}
+
+.tags-input:focus-within {
+  /* Box Model - Border */
+  border-color: #999;
+
+  /* Other Visual */
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
+}
+
+.selected-tags {
+  /* Display & Flex */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.tags-input input {
+  /* Display & Flex */
+  flex: 1;
+
+  /* Box Model - Dimensions */
+  min-width: 110px;
+  height: 32px;
+  padding: 0;
+
+  /* Box Model - Border */
+  border: 0;
+  outline: 0;
+
+  /* Background */
+  background: transparent;
+
+  /* Typography */
+  color: var(--text);
+  font-size: 0.8125rem;
+}
+
+.tag-chip {
+  /* Display & Flex */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+
+  /* Box Model - Dimensions */
+  padding: 0.375rem 0.5rem;
+
+  /* Box Model - Border */
+  border-radius: 7px;
+
+  /* Background */
+  background: #f1f1f1;
+
+  /* Typography */
+  font-size: 0.75rem;
+}
+
+.tag-chip button {
+  /* Display & Grid */
+  display: grid;
+  place-items: center;
+
+  /* Box Model - Dimensions */
+  width: 17px;
+  height: 17px;
+  padding: 0;
+
+  /* Box Model - Border */
+  border: 0;
+
+  /* Background */
+  background: transparent;
+
+  /* Typography */
+  color: #888;
+  font-size: 0.875rem;
+}
+
+.tag-suggestions {
+  /* Display & Flex */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  /* Box Model - Dimensions */
+  margin-top: 0.3125rem;
+
+  /* Box Model - Border */
+  border-radius: 9px;
+
+  /* Other Visual */
+  overflow: hidden;
+}
+
+.tag-suggestions button {
+  /* Box Model - Dimensions */
+  padding: 0.625rem 0.75rem;
+
+  /* Box Model - Border */
+  border: 0;
+
+  /* Background */
+  background: #f7f7f7;
+
+  /* Typography */
+  color: var(--text);
+  text-align: left;
+  font-size: 0.75rem;
+}
+
+.tag-suggestions button:hover {
+  /* Background */
+  background: #eee;
+}
+
+@media (max-width: 440px) {
+  .upload-page {
+    /* Box Model - Dimensions */
+    padding: 1.75rem 1rem 4rem;
+  }
+
+  .upload-actions {
+    /* Display & Flex */
+    flex-direction: column-reverse;
+  }
+
+  .upload-actions .btn {
+    /* Box Model - Dimensions */
+    width: 100%;
+  }
+}

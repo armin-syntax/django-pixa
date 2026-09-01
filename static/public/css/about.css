@@ -1,0 +1,58 @@
+.about-page {
+  /* Box Model - Dimensions */
+  padding: 4.5rem 0 6rem;
+}
+
+.about-copy {
+  /* Box Model - Dimensions */
+  max-width: 800px;
+}
+
+.about-copy h1 {
+  /* Box Model - Dimensions */
+  margin-bottom: 1.5rem;
+
+  /* Typography */
+  font-size: 3.625rem;
+}
+
+.about-copy p {
+  /* Box Model - Dimensions */
+  margin: 0 0 1.25rem;
+
+  /* Typography */
+  color: var(--muted);
+  font-size: 1.0625rem;
+  line-height: 1.85;
+}
+
+.cta {
+  /* Display & Flex */
+  display: flex;
+  gap: 0.625rem;
+
+  /* Box Model - Dimensions */
+  margin-top: 1.875rem;
+}
+
+@media (max-width: 760px) {
+  .about-page {
+    /* Box Model - Dimensions */
+    padding-top: 3rem;
+  }
+
+  .about-copy h1 {
+    /* Typography */
+    font-size: 2.75rem;
+  }
+
+  .cta {
+    /* Display & Flex */
+    flex-direction: column;
+  }
+
+  .cta .btn {
+    /* Box Model - Dimensions */
+    width: 100%;
+  }
+}

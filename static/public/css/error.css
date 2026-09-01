@@ -1,0 +1,29 @@
+.error-page {
+  /* Display & Flex */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Box Model - Dimensions */
+  min-height: calc(100vh - 66px);
+  padding: 3rem 1.25rem;
+
+  /* Typography */
+  text-align: center;
+}
+
+.error-page h1 {
+  /* Box Model - Dimensions */
+  margin-bottom: 0.5rem;
+
+  /* Typography */
+  font-size: 5rem;
+}
+
+.error-page p {
+  /* Box Model - Dimensions */
+  margin: 0 0 1.5rem;
+
+  /* Typography */
+  color: var(--muted);
+}

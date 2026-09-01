@@ -1,0 +1,108 @@
+.auth-wrap {
+  /* Display & Flex */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  /* Box Model - Dimensions */
+  padding: 2.5rem 1.25rem 5rem;
+}
+
+.auth-card {
+  /* Box Model - Dimensions */
+  width: min(430px, 100%);
+  padding: 2.125rem;
+
+  /* Box Model - Border */
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+
+  /* Background */
+  background: #fff;
+}
+
+.auth-card h1 {
+  /* Box Model - Dimensions */
+  margin-bottom: 0.5rem;
+
+  /* Typography */
+  font-size: 2.125rem;
+}
+
+.auth-card .sub {
+  /* Box Model - Dimensions */
+  margin: 0 0 1.75rem;
+
+  /* Typography */
+  color: var(--muted);
+}
+
+.auth-foot {
+  /* Box Model - Dimensions */
+  margin-top: 1.375rem;
+
+  /* Typography */
+  color: var(--muted);
+  font-size: 0.8125rem;
+  text-align: center;
+}
+
+.auth-foot a {
+  /* Typography */
+  color: var(--text);
+  font-weight: 750;
+}
+
+.form-links {
+  /* Display & Flex */
+  display: flex;
+  justify-content: flex-end;
+
+  /* Box Model - Dimensions */
+  margin: -0.1875rem 0 1rem;
+
+  /* Typography */
+  font-size: 0.8125rem;
+}
+
+.form-links a:hover {
+  /* Typography */
+  color: var(--accent);
+}
+
+.code-input {
+  /* Typography */
+  letter-spacing: 0.3em;
+  text-align: center;
+  font-weight: 700;
+}
+
+.password-note {
+  /* Box Model - Dimensions */
+  margin: -0.25rem 0 1rem;
+
+  /* Typography */
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 440px) {
+  .auth-wrap {
+    /* Box Model - Dimensions */
+    padding: 1rem 1rem 4rem;
+  }
+
+  .auth-card {
+    /* Box Model - Dimensions */
+    padding: 1.5rem 1.125rem;
+
+    /* Box Model - Border */
+    border-radius: 14px;
+  }
+
+  .auth-card h1 {
+    /* Typography */
+    font-size: 1.875rem;
+  }
+}

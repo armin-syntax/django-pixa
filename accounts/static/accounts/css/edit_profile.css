@@ -1,0 +1,144 @@
+.edit-profile {
+  /* Display & Flex */
+  display: flex;
+  justify-content: center;
+
+  /* Box Model - Dimensions */
+  padding: 3.75rem 1.25rem 5rem;
+}
+
+.edit-profile-card {
+  /* Box Model - Dimensions */
+  width: min(520px, 100%);
+}
+
+.edit-profile-heading {
+  /* Box Model - Dimensions */
+  margin-bottom: 2rem;
+
+  /* Typography */
+  text-align: center;
+}
+
+.edit-profile-heading h1 {
+  /* Box Model - Dimensions */
+  margin-bottom: 0.5rem;
+}
+
+.edit-profile-heading p {
+  /* Box Model - Dimensions */
+  margin: 0;
+
+  /* Typography */
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.profile-photo-section {
+  /* Display & Flex */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+
+  /* Box Model - Dimensions */
+  margin-bottom: 1.875rem;
+}
+
+.profile-photo {
+  /* Box Model - Dimensions */
+  width: 96px;
+  height: 96px;
+
+  /* Box Model - Border */
+  border-radius: 50%;
+
+  /* Background */
+  background: #eee;
+
+  /* Other Visual */
+  overflow: hidden;
+}
+
+.profile-photo img {
+  /* Box Model - Dimensions */
+  width: 100%;
+  height: 100%;
+
+  /* Other Visual */
+  object-fit: cover;
+}
+
+.profile-photo-actions {
+  /* Display & Flex */
+  display: flex;
+  flex-direction: column;
+  gap: 0.4375rem;
+}
+
+.photo-action {
+  /* Display & Flex */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Box Model - Dimensions */
+  width: 30px;
+  height: 30px;
+
+  /* Box Model - Border */
+  border-radius: 50%;
+
+  /* Typography */
+  font-size: 1.25rem;
+}
+
+.photo-action.add {
+  /* Background */
+  background: var(--text);
+
+  /* Typography */
+  color: #fff;
+
+  /* Other Visual */
+  cursor: pointer;
+}
+
+.photo-action.remove {
+  /* Background */
+  background: #f1f1f1;
+
+  /* Typography */
+  color: #777;
+}
+
+.form-actions {
+  /* Display & Flex */
+  display: flex;
+  gap: 0.625rem;
+
+  /* Box Model - Dimensions */
+  margin-top: 1.5rem;
+}
+
+.form-actions .btn {
+  /* Display & Flex */
+  flex: 1;
+}
+
+@media (max-width: 440px) {
+  .edit-profile {
+    /* Box Model - Dimensions */
+    padding: 1.75rem 1rem 4rem;
+  }
+
+  .form-actions {
+    /* Display & Flex */
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .btn {
+    /* Box Model - Dimensions */
+    width: 100%;
+  }
+}

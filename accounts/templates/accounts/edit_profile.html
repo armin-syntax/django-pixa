@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Profile — Pixa</title>
+    <meta name="description" content="Pixa is a minimal visual discovery platform for photography and personal collections.">
+    <link rel="stylesheet" href="assets/css/public.css">
+    <link rel="stylesheet" href="assets/css/edit_profile.css">
+  </head>
+  <body>
+    <!--
+    <div class="messages-container" aria-live="polite">
+      <div class="alert alert-success">Success message</div>
+      <div class="alert alert-info">Information message</div>
+      <div class="alert alert-warning">Warning message</div>
+      <div class="alert alert-danger">Error message</div>
+    </div>
+    -->
+    <header class="topbar">
+      <a class="logo" href="index.html" aria-label="Pixa home">p</a>
+      <form class="search-form" action="" method="GET" role="search">
+        <input class="search" type="search" placeholder="Search..." aria-label="Search">
+      </form>
+      <nav class="nav">
+        <a href="index.html">Explore</a>
+        <a href="about.html">About</a>
+      </nav>
+      <a class="avatar" href="profile.html" aria-label="Profile">A</a>
+    </header>
+
+    <main class="edit-profile">
+      <section class="edit-profile-card">
+        <div class="edit-profile-heading">
+          <div class="eyebrow">Account</div>
+          <h1>Edit profile</h1>
+          <p>Update your profile information.</p>
+        </div>
+
+        <div class="profile-photo-section">
+          <div class="profile-photo">
+            <img id="profile-preview" src="assets/images/1.jpg" alt="Profile picture">
+          </div>
+          <div class="profile-photo-actions">
+            <input id="profile-image" name="profile_image" type="file" accept="image/*" hidden="">
+            <label for="profile-image" class="photo-action add" aria-label="Change profile picture" title="Change profile picture">+</label>
+            <a href="/profile/photo/delete/" class="photo-action remove" aria-label="Delete profile picture" title="Delete profile picture">−</a>
+          </div>
+        </div>
+
+        <form action="" method="POST" class="edit-profile-form" enctype="multipart/form-data">
+          <!-- <div class="errors-container"><div class="alert alert-danger">Error message</div><div class="alert alert-info">Information message</div></div> -->
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" name="username" class="field" type="text" value="armin.syntax" maxlength="30" required="" placeholder="Enter your username">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" name="email" class="field" type="email" value="armin@example.com" required="" placeholder="Enter your email address">
+          </div>
+
+          <div class="form-group">
+            <label for="full_name">Full name</label>
+            <input id="full_name" name="full_name" class="field" type="text" value="Armin Emami" maxlength="100" placeholder="Enter your full name">
+          </div>
+
+          <div class="form-group">
+            <div class="label-row">
+              <label for="bio">Bio</label>
+              <span id="bio-count" class="counter">0 / 500</span>
+            </div>
+            <textarea id="bio" name="bio" class="field" maxlength="500" placeholder="Write a short bio...">Designer, photographer and lover of quiet places.</textarea>
+          </div>
+
+          <div class="form-actions">
+            <a href="profile.html" class="btn btn-outline">Cancel</a>
+            <button type="submit" class="btn btn-red">Save changes</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <span>© 2026 Pixa</span>
+        <span>
+          <a href="about.html">About</a>
+          <span class="footer-dot">·</span>
+          <a href="login.html">Login</a>
+          <span class="footer-dot">·</span>
+          <a href="register.html">Sign up</a>
+        </span>
+      </div>
+    </footer>
+
+    <script src="assets/js/public.js"></script>
+    <script src="assets/js/edit_profile.js"></script>
+  </body>
+</html>

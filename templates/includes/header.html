@@ -1,0 +1,18 @@
+<header class="topbar">
+  <a aria-label="Pixa home" class="logo" href="{% url 'photos:photos' %}">p</a>
+  
+  <form class="search-form" action="" method="GET" role="search">
+    <input aria-label="Search" class="search" placeholder="Search..." type="search">
+  </form>
+  
+  <nav class="nav">
+    <a href="{% url 'photos:photos' %}">Explore</a>
+    <a href="{% url 'core:about' %}">About</a>
+  </nav>
+  
+  {% if request.user.is_authenticated %}
+    <a aria-label="Profile" class="avatar" href="{% url 'accounts:user-profile' request.user.username %}">A</a>
+  {% else %}
+    <a aria-label="User Login" class="avatar" href="{% url 'accounts:user-login' %}">A</a>
+  {% endif %}
+</header>

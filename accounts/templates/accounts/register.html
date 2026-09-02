@@ -1,90 +1,58 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
-    <title>Register — Pixa</title>
-    <meta content="Pixa is a minimal visual discovery platform for photography and personal collections." name="description">
-    <link href="assets/css/public.css" rel="stylesheet">
-    <link href="assets/css/auth.css" rel="stylesheet">
-  </head>
-  <body>
-    <!--
-    <div class="messages-container" aria-live="polite">
-      <div class="alert alert-success">Success message</div>
-      <div class="alert alert-info">Information message</div>
-      <div class="alert alert-warning">Warning message</div>
-      <div class="alert alert-danger">Error message</div>
-    </div>
-    -->
-    <header class="topbar">
-      <a aria-label="Pixa home" class="logo" href="index.html">p</a>
-      <form class="search-form" action="" method="GET" role="search">
-        <input aria-label="Search" class="search" placeholder="Search..." type="search">
-      </form>
-      <nav class="nav">
-        <a href="index.html">Explore</a>
-        <a href="about.html">About</a>
-      </nav>
-      <a aria-label="Profile" class="avatar" href="profile.html">A</a>
-    </header>
+{% extends 'base.html' %}
+{% load static %}
 
-    <main class="auth-wrap">
-      <section class="auth-card">
-        <div class="eyebrow">Start creating</div>
-        <h1>Create account</h1>
-        <p class="sub">Build your own visual collection.</p>
-        <form action="" method="POST">
-          <!-- <div class="errors-container"><div class="alert alert-danger">Error message</div><div class="alert alert-info">Information message</div></div> -->
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input autocomplete="username" class="field" id="username" maxlength="30" name="username" placeholder="Choose a username" required="" type="text">
-          </div>
+{% block title %}Create Account{% endblock %}
 
-          <div class="form-group">
-            <label for="full_name">Full name</label>
-            <input autocomplete="name" class="field" id="full_name" maxlength="100" name="full_name" placeholder="Enter your full name" type="text">
-          </div>
+{% block extra_header %}
+<link href="{% static 'accounts/css/auth.css' %}" rel="stylesheet">
+{% endblock %}
 
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input autocomplete="email" class="field" id="email" name="email" placeholder="you@example.com" required="" type="email">
-          </div>
+{% block content %}
 
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input autocomplete="new-password" class="field" id="password" minlength="8" name="password" placeholder="Enter your password" required="" type="password">
-          </div>
+<main class="auth-wrap">
+  <section class="auth-card">
+    <div class="eyebrow">Start creating</div>
+    <h1>Create account</h1>
+    <p class="sub">Build your own visual collection.</p>
 
-          <div class="form-group">
-            <label for="password-confirm">Confirm password</label>
-            <input autocomplete="new-password" class="field" id="password-confirm" minlength="8" name="password_confirm" placeholder="Confirm your password" required="" type="password">
-          </div>
-
-          <button class="btn btn-red full" type="submit">Create account</button>
-        </form>
-
-        <div class="auth-foot">
-          Already have an account?
-          <a href="login.html">Sign in</a>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="container footer-inner">
-        <span>© 2026 Pixa</span>
-        <span>
-          <a href="about.html">About</a>
-          <span class="footer-dot">·</span>
-          <a href="login.html">Login</a>
-          <span class="footer-dot">·</span>
-          <a href="register.html">Sign up</a>
-        </span>
+    <form action="" method="POST">
+      <!-- <div class="errors-container">
+        <div class="alert alert-danger">Error message</div>
+      </div> -->
+      
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input autocomplete="username" class="field" id="username" maxlength="30" name="username" placeholder="Choose a username" required="" type="text">
       </div>
-    </footer>
 
-    <script src="assets/js/public.js">
-    </script>
-  </body>
-</html>
+      <div class="form-group">
+        <label for="full_name">Full name</label>
+        <input autocomplete="name" class="field" id="full_name" maxlength="100" name="full_name" placeholder="Enter your full name" type="text">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input autocomplete="email" class="field" id="email" name="email" placeholder="you@example.com" required="" type="email">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input autocomplete="new-password" class="field" id="password" minlength="8" name="password" placeholder="Enter your password" required="" type="password">
+      </div>
+
+      <div class="form-group">
+        <label for="password-confirm">Confirm password</label>
+        <input autocomplete="new-password" class="field" id="password-confirm" minlength="8" name="password_confirm" placeholder="Confirm your password" required="" type="password">
+      </div>
+
+      <button class="btn btn-red full" type="submit">Create account</button>
+    </form>
+
+    <div class="auth-foot">
+      Already have an account?
+      <a href="{% url 'accounts:user-login' %}">Sign in</a>
+    </div>
+  </section>
+</main>
+
+{% endblock %}

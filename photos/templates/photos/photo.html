@@ -1,238 +1,86 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <title>Photo Title — Pixa</title>
-    <meta
-      content="Pixa is a minimal visual discovery platform for photography and personal collections."
-      name="description"
-    />
-    <link href="assets/css/public.css" rel="stylesheet" />
-    <link href="assets/css/photo.css" rel="stylesheet" />
-  </head>
-  <body>
-    <!--
-    <div class="messages-container" aria-live="polite">
-      <div class="alert alert-success">Success message</div>
-      <div class="alert alert-info">Information message</div>
-      <div class="alert alert-warning">Warning message</div>
-      <div class="alert alert-danger">Error message</div>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ photo.title }}{% endblock %}
+
+{% block extra_header %}
+<link href="{% static 'photos/css/photo.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<main class="container photo-page">
+  <section class="photo-layout">
+    <div class="photo-image">
+      <img
+        alt="{{ photo.title }}"
+        src="{{ photo.image.url }}"
+      />
     </div>
-    -->
-    <header class="topbar">
-      <a aria-label="Pixa home" class="logo" href="index.html">p</a>
-      <form class="search-form" action="" method="GET" role="search">
-        <input
-          aria-label="Search"
-          class="search"
-          placeholder="Search..."
-          type="search"
-        />
-      </form>
-      <nav class="nav">
-        <a href="index.html">Explore</a>
-        <a href="about.html">About</a>
-      </nav>
-      <a aria-label="Profile" class="avatar" href="profile.html">A</a>
-    </header>
 
-    <main class="container photo-page">
-      <section class="photo-layout">
-        <div class="photo-image">
-          <img
-            alt="Photo Title"
-            src="assets/images/1.jpg"
-          />
+    <aside class="photo-side">
+      <div class="eyebrow">Photo</div>
+      <h1>{{ photo.title }}</h1>
+      <p class="photo-caption">
+        {{ photo.caption }}
+      </p>
+
+      <div class="author-row">
+        <a href="{{ photo.user.get_profile_url }}" class="avatar">{{ photo.user.full_name|first }}</a>
+        <div>
+          <a href="{{ photo.user.get_profile_url }}" class="author-name">by {{ photo.user.username }}</a>
+          <div class="muted">{{ photo.created_since }}</div>
         </div>
-
-        <aside class="photo-side">
-          <div class="eyebrow">Photo</div>
-          <h1>Photo Title</h1>
-          <p class="photo-caption">
-            A soft, sunlit corner with natural textures, old chairs and just
-            enough greenery.
-          </p>
-
-          <div class="author-row">
-            <a class="avatar" href="profile.html">N</a>
-            <div>
-              <a class="author-name" href="profile.html">by Photo Author</a>
-              <div class="muted">12 min ago</div>
-            </div>
-          </div>
-
-          <div class="chips">
-            <a class="chip" href="index.html?tag=plants">sky</a>
-            <a class="chip" href="index.html?tag=minimal">minimal</a>
-            <a class="chip" href="index.html?tag=minimal">blue</a>
-          </div>
-
-          <div class="like-row">
-            <a class="btn btn-red like-button" href="">Like</a>
-            <span class="like-count">138 likes</span>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="action-buttons">
-            <a class="btn btn-outline w-100 download-photo" href="">Download</a>
-            <a href="" class="btn btn-outline w-100 save-photo" data-saved="0">Save</a>
-          </div>
-        </aside>
-      </section>
-
-      <section class="related">
-        <h2>Related photos</h2>
-        <div class="masonry">
-          <article class="card">
-            <a class="card-link" href="photo.html">
-              <img
-                alt="Photo Title"
-                loading="lazy"
-                src="assets/images/2.jpg"
-              />
-            </a>
-            <div class="card-menu">
-              <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-              <div class="card-menu-dropdown">
-                <a href="">Download</a>
-              </div>
-            </div>
-            <div class="card-overlay">
-              <div>
-                <a class="card-title" href="photo.html">Photo Title</a>
-                <a class="card-author" href="profile.html">by Photo Author</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <a class="card-link" href="photo.html">
-              <img
-                alt="Photo Title"
-                loading="lazy"
-                src="assets/images/3.jpg"
-              />
-            </a>
-            <div class="card-menu">
-              <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-              <div class="card-menu-dropdown">
-                <a href="">Download</a>
-              </div>
-            </div>
-            <div class="card-overlay">
-              <div>
-                <a class="card-title" href="photo.html">Photo Title</a>
-                <a class="card-author" href="profile.html">by Photo Author</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <a class="card-link" href="photo.html">
-              <img
-                alt="Photo Title"
-                loading="lazy"
-                src="assets/images/4.jpeg"
-              />
-            </a>
-            <div class="card-menu">
-              <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-              <div class="card-menu-dropdown">
-                <a href="">Download</a>
-              </div>
-            </div>
-            <div class="card-overlay">
-              <div>
-                <a class="card-title" href="photo.html">Photo Title</a>
-                <a class="card-author" href="profile.html">by Photo Author</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <a class="card-link" href="photo.html">
-              <img
-                alt="Photo Title"
-                loading="lazy"
-                src="assets/images/5.jpeg"
-              />
-            </a>
-            <div class="card-menu">
-              <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-              <div class="card-menu-dropdown">
-                <a href="">Download</a>
-              </div>
-            </div>
-            <div class="card-overlay">
-              <div>
-                <a class="card-title" href="photo.html">Photo Title</a>
-                <a class="card-author" href="profile.html">by Photo Author</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <a class="card-link" href="photo.html">
-              <img
-                alt="Photo Title"
-                loading="lazy"
-                src="assets/images/6.jpg"
-              />
-            </a>
-            <div class="card-menu">
-              <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-              <div class="card-menu-dropdown">
-                <a href="">Download</a>
-              </div>
-            </div>
-            <div class="card-overlay">
-              <div>
-                <a class="card-title" href="photo.html">Photo Title</a>
-                <a class="card-author" href="profile.html">by Photo Author</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <a class="card-link" href="photo.html">
-              <img
-                alt="Photo Title"
-                loading="lazy"
-                src="assets/images/7.jpg"
-              />
-            </a>
-            <div class="card-menu">
-              <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-              <div class="card-menu-dropdown">
-                <a href="">Download</a>
-              </div>
-            </div>
-            <div class="card-overlay">
-              <div>
-                <a class="card-title" href="photo.html">Photo Title</a>
-                <a class="card-author" href="profile.html">by Photo Author</a>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="container footer-inner">
-        <span>© 2026 Pixa</span>
-        <span>
-          <a href="about.html">About</a>
-          <span class="footer-dot">·</span>
-          <a href="login.html">Login</a>
-          <span class="footer-dot">·</span>
-          <a href="register.html">Sign up</a>
-        </span>
       </div>
-    </footer>
 
-    <script src="assets/js/public.js"></script>
-  </body>
-</html>
+      <div class="chips">
+        {% for tag in photo.tags.all %}
+          <a href="{% url 'photos:photos' %}?tag={{ tag.slug }}" class="chip">{{ tag.name }}</a>
+        {% endfor %}
+      </div>
+
+      <div class="like-row">
+        <a href="{{ photo.get_like_url }}" class="btn btn-red like-button">Like</a>
+        <span class="like-count">{{ photo.get_likes_count }}</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="action-buttons">
+        <a href="{{ photo.image.url }}" class="btn btn-outline w-100 download-photo">Download</a>
+        <a href="{{ photo.get_save_url }}" class="btn btn-outline w-100 save-photo" data-saved="0">Save</a>
+      </div>
+    </aside>
+  </section>
+
+  <section class="related">
+    <h2>Related photos</h2>
+    <div class="masonry">
+      {% for r_photo in related_photos %}
+        <article class="card">
+          <a href="{{ r_photo.get_absolute_url }}" class="card-link">
+            <img
+              alt="{{ r_photo.title }}"
+              loading="lazy"
+              src="{{ r_photo.image.url }}"
+            />
+          </a>
+          <div class="card-menu">
+            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
+            <div class="card-menu-dropdown">
+              <a href="{{ r_photo.image.url }}">Download</a>
+            </div>
+          </div>
+          <div class="card-overlay">
+            <div>
+              <a href="{{ r_photo.get_absolute_url }}" class="card-title">{{ r_photo.title }}</a>
+              <a href="{{ r_photo.user.get_profile_url }}" class="card-author">by {{ r_photo.user.username }}</a>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+</main>
+
+{% endblock %}

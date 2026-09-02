@@ -1,0 +1,14 @@
+<!-- <div class="messages-container" aria-live="polite">
+  <div class="alert alert-success">Success message</div>
+  <div class="alert alert-info">Information message</div>
+  <div class="alert alert-warning">Warning message</div>
+  <div class="alert alert-danger">Error message</div>
+</div> -->
+
+{% if messages %}
+  <div class="messages-container" aria-live="polite">
+    {% for msg in messages %}
+      <div class="alert alert-{{ msg.tags }}">{{ msg }}</div>
+    {% endfor %}
+  </div>
+{% endif %}

@@ -1,0 +1,17 @@
+<footer class="footer">
+  <div class="container footer-inner">
+    <span>© 2026 Pixa</span>
+    <span>
+      <a href="{% url 'core:about' %}">About</a>
+      <span class="footer-dot">·</span>
+      
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'accounts:user-login' %}">Login</a>
+        <span class="footer-dot">·</span>
+        <a href="{% url 'accounts:user-register' %}">Sign up</a>
+      {% else %}
+        <a href="{% url 'accounts:user-profile' request.user.username %}">Profile</a>
+      {% endif %}
+    </span>
+  </div>
+</footer>

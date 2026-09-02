@@ -1,0 +1,27 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>{% block title %}{% endblock %} — Pixa</title>
+    <meta content="Pixa is a minimal visual discovery platform for photography and personal collections." name="description">
+    <link href="{% static 'public/css/public.css' %}" rel="stylesheet">
+    {% block extra_header %}{% endblock %}
+  </head>
+  <body>
+    
+    {% include 'includes/messages.html %}
+    {% include 'includes/header.html' %}
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    {% include 'includes/footer.html' %}
+
+    <script src="assets/js/public.js"></script>
+    {% block extra_body %}{% endblock %}
+
+  </body>
+</html>

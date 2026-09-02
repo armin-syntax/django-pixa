@@ -1,589 +1,87 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <title>Armin Emami — Pixa</title>
-    <meta
-      content="Pixa is a minimal visual discovery platform for photography and personal collections."
-      name="description"
-    />
-    <link href="assets/css/public.css" rel="stylesheet" />
-    <link href="assets/css/profile.css" rel="stylesheet" />
-  </head>
-  <body>
-    <!--
-    <div class="messages-container" aria-live="polite">
-      <div class="alert alert-success">Success message</div>
-      <div class="alert alert-info">Information message</div>
-      <div class="alert alert-warning">Warning message</div>
-      <div class="alert alert-danger">Error message</div>
-    </div>
-    -->
-    <header class="topbar">
-      <a aria-label="Pixa home" class="logo" href="index.html">p</a>
-      <form class="search-form" action="" method="GET" role="search">
-        <input
-          aria-label="Search"
-          class="search"
-          placeholder="Search..."
-          type="search"
-        />
-      </form>
-      <nav class="nav">
-        <a href="index.html">Explore</a>
-        <a href="about.html">About</a>
-      </nav>
-      <a aria-label="Profile" class="avatar" href="profile.html">A</a>
-    </header>
+{% extends 'base.html' %}
+{% load static %}
 
-    <main class="container profile-page">
-      <section class="profile-head">
-        <div class="profile-avatar">A</div>
-        <div class="profile-info">
-          <h1>Armin Emami</h1>
-          <div class="muted">@armin.syntax</div>
-          <div class="stats">
-            <span>
-              <strong>128</strong>
-              photos
-            </span>
-            <span>
-              <strong>2.4k</strong>
-              followers
-            </span>
-            <span>
-              <strong>186</strong>
-              following
-            </span>
-          </div>
-        </div>
-        <div class="profile-actions">
-          <details class="settings-menu">
-            <summary class="btn btn-outline">Settings</summary>
-            <div class="settings-panel">
-              <a href="">Log out</a>
-              <a href="edit_profile.html">Edit profile</a>
-              <a class="delete-link" href="delete_account.html">Delete account</a>
-            </div>
-          </details>
-          <a class="btn btn-outline" href="upload.html">Upload</a>
-          <a href="" class="btn btn-red">Follow</a>
-        </div>
-      </section>
+{% block title %}{{ user.full_name }}{% endblock %}
 
-      <nav class="tabs profile-tabs">
-        <a class="active" href="profile.html">Photos</a>
-        <a href="profile_saved.html">Saved</a>
-        <a href="profile_about.html">About</a>
-      </nav>
+{% block extra_header %}
+<link href="{% static 'accounts/css/profile.css' %}" rel="stylesheet">
+{% endblock %}
 
-      <div class="masonry">
-        <!-- Photo 1 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/1.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
+{% block content %}
 
-        <!-- Photo 2 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/2.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
+<main class="container profile-page">
+  <section class="profile-head">
+    <div class="profile-avatar">{{ user.full_name|first }}</div>
 
-        <!-- Photo 3 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/3.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
+    <div class="profile-info">
+      <h1>{{ user.full_name }}</h1>
+      <div class="muted">@{{ user.username }}</div>
 
-        <!-- Photo 4 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/4.jpeg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 5 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/5.jpeg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 6 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/6.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 7 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/7.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 8 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/8.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 9 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/9.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 10 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/10.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 11 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/11.jpeg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 12 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/12.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 13 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/13.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 14 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/14.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 15 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/15.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 16 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/16.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 17 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/17.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 18 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/18.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 19 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/19.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- Photo 20 -->
-        <article class="card">
-          <a class="card-link" href="photo.html">
-            <img
-              alt="Photo Title"
-              loading="lazy"
-              src="assets/images/20.jpg"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="">Download</a>
-              <a class="delete-photo-link" href="">Delete</a>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a class="card-title" href="photo.html">Photo Title</a>
-              <a class="card-author" href="profile.html">by Photo Author</a>
-            </div>
-          </div>
-        </article>
-      </div>
-
-      <nav aria-label="Pagination" class="pagination">
-        <a aria-label="Previous page" class="disabled" href="#">←</a>
-        <a class="active" href="index.html">1</a>
-        <a href="index.html?page=2">2</a>
-        <a href="index.html?page=3">3</a>
-        <span>…</span>
-        <a href="index.html?page=12">12</a>
-        <a aria-label="Next page" href="index.html?page=2">→</a>
-      </nav>
-    </main>
-
-    <footer class="footer">
-      <div class="container footer-inner">
-        <span>© 2026 Pixa</span>
+      <div class="stats">
         <span>
-          <a href="about.html">About</a>
-          <span class="footer-dot">·</span>
-          <a href="login.html">Login</a>
-          <span class="footer-dot">·</span>
-          <a href="register.html">Sign up</a>
+          <strong>{{ user.get_photos_count }}</strong>
+          photos
+        </span>
+        <span>
+          <strong>{{ user.get_followers_count }}</strong>
+          followers
+        </span>
+        <span>
+          <strong>{{ user.get_following_count }}</strong>
+          following
         </span>
       </div>
-    </footer>
+    </div>
 
-    <script src="assets/js/public.js"></script>
-  </body>
-</html>
+    <div class="profile-actions">
+      {% if request.user == user %}
+        <details class="settings-menu">
+          <summary class="btn btn-outline">Settings</summary>
+          <div class="settings-panel">
+            <a href="{{ user.get_logout_url }}">Log out</a>
+            <a href="{{ user.get_edit_profile_url }}">Edit profile</a>
+            <a href="{{ user.get_delete_account_url }}" class="delete-link">Delete account</a>
+          </div>
+        </details>
+        <a href="{% url 'photos:upload' %}" class="btn btn-outline">Upload</a>
+      {% else %}
+        <a href="{{ user.get_follow_url }}" class="btn btn-red follow-action">Follow</a>
+      {% endif %}
+    </div>
+  </section>
+
+  <nav class="tabs profile-tabs">
+    <a href="{{ user.get_photos_url }}" class="">Photos</a>
+    {% if request.user == user %}
+      <a href="{{ user.get_saved_photos_url }}" class="">Saved</a>
+    {% endif %}
+    <a href="{{ user.get_about_url }}" class="">About</a> <!-- active -->
+  </nav>
+
+  <div class="masonry">
+    {% for photo in saved_photos %}
+      <article class="card">
+        <a class="card-link" href="{{ photo.get_absolute_url }}">
+          <img alt="{{ photo.title }}" loading="lazy" src="{{ photo.image.url }}">
+        </a>
+        <div class="card-menu">
+          <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
+          <div class="card-menu-dropdown">
+            <a href="{{ photo.image.url }}">Download</a>
+            <a href="{{ photo.get_delete_url }}" class="delete-photo-link">Delete</a>
+          </div>
+        </div>
+        <div class="card-overlay">
+          <div class="card-bottom-box">
+            <a class="card-title" href="{{ photo.get_absolute_url }}">{{ photo.title }}</a>
+            <a class="card-author" href="{{ photo.user.get_profile_url }}">by {{ photo.user.username }}</a>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+
+  {% include 'includes/pagination.html' %}
+</main>
+
+{% endblock %}

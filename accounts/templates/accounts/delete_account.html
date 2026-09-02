@@ -1,61 +1,29 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Delete Account — Pixa</title>
-    <meta name="description" content="Delete your Pixa account.">
-    <link rel="stylesheet" href="assets/css/public.css">
-    <link rel="stylesheet" href="assets/css/auth.css">
-  </head>
-  <body>
-    <!--
-    <div class="messages-container" aria-live="polite">
-      <div class="alert alert-success">Success message</div>
-      <div class="alert alert-info">Information message</div>
-      <div class="alert alert-warning">Warning message</div>
-      <div class="alert alert-danger">Error message</div>
-    </div>
-    -->
-    <header class="topbar">
-      <a class="logo" href="index.html" aria-label="Pixa home">p</a>
-      <form class="search-form" action="" method="GET" role="search">
-        <input class="search" type="search" placeholder="Search..." aria-label="Search">
-      </form>
-      <nav class="nav">
-        <a href="index.html">Explore</a>
-        <a href="about.html">About</a>
-      </nav>
-      <a class="avatar" href="profile.html" aria-label="Profile">A</a>
-    </header>
+{% extends 'base.html' %}
+{% load static %}
 
-    <main class="auth-wrap">
-      <section class="auth-card">
-        <div class="eyebrow">Account</div>
-        <h1>Delete account</h1>
-        <p class="sub">This action cannot be undone. Your profile, photos and saved items will be removed.</p>
-        <form action="" method="POST">
-          <!-- <div class="errors-container"><div class="alert alert-danger">Error message</div><div class="alert alert-info">Information message</div></div> -->
-          <button class="btn btn-danger full" type="submit">Delete account</button>
-          <a class="btn btn-outline full mt-2" href="profile.html">Cancel</a>
-        </form>
-      </section>
-    </main>
+{% block title %}Delete Account{% endblock %}
 
-    <footer class="footer">
-      <div class="container footer-inner">
-        <span>© 2026 Pixa</span>
-        <span>
-          <a href="about.html">About</a>
-          <span class="footer-dot">·</span>
-          <a href="login.html">Login</a>
-          <span class="footer-dot">·</span>
-          <a href="register.html">Sign up</a>
-        </span>
-      </div>
-    </footer>
+{% block extra_header %}
+<link href="{% static 'accounts/css/auth.css' %}" rel="stylesheet">
+{% endblock %}
 
-    <script src="assets/js/public.js">
-    </script>
-  </body>
-</html>
+{% block content %}
+
+<main class="auth-wrap">
+  <section class="auth-card">
+    <div class="eyebrow">Account</div>
+    <h1>Delete account</h1>
+    <p class="sub">This action cannot be undone. Your profile, photos and saved items will be removed.</p>
+
+    <form action="" method="POST">
+      <!-- <div class="errors-container">
+        <div class="alert alert-danger">Error message</div>
+      </div> -->
+
+      <button class="btn btn-danger full" type="submit">Delete account</button>
+      <a class="btn btn-outline full mt-2" href="{{ request.user.get_profile_url }}">Cancel</a>
+    </form>
+  </section>
+</main>
+
+{% endblock %}

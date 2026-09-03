@@ -55,38 +55,35 @@ class CustomUser(AbstractUser):
         ordering = ['username']
         verbose_name = 'User'
         verbose_name_plural = 'Users'
-    
-    # ----- COUNTS -----
-
-    @property
-    def get_followers_count(self):
-        return self.followers.count()
-    
-    @property
-    def get_following_count(self):
-        return self.following.count()
-    
-    @property
-    def get_photos_count(self):
-        return self.photos.count()
-
-    # ----- LISTS -----
-
-    @property
-    def get_followers(self):
-        return CustomUser.objects.filter(following__to_user=self)
-    
-    @property
-    def get_following(self):
-        return CustomUser.objects.filter(followers__from_user=self)
-
-    @property
-    def get_photos(self):
-        return self.photos.all()
 
     @property
     def created_since(self):
         return get_time_since(self.created_at)
+
+    # ----- COUNTS -----
+
+    @property
+    def followers_count(self):
+        return self.followers.count()
+
+    @property
+    def following_count(self):
+        return self.following.count()
+
+    @property
+    def photos_count(self):
+        return self.photos.count()
+
+    # ----- LISTS -----
+
+    def get_followers(self):
+        return CustomUser.objects.filter(following__to_user=self)
+    
+    def get_following(self):
+        return CustomUser.objects.filter(followers__from_user=self)
+
+    def get_photos(self):
+        return self.photos.all()
 
 
 class Relation(models.Model):

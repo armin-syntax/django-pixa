@@ -1,62 +1,28 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>About — Pixa</title>
-    <meta name="description" content="Pixa is a minimal visual discovery platform for photography and personal collections.">
-    <link rel="stylesheet" href="assets/css/public.css">
-    <link rel="stylesheet" href="assets/css/about.css">
-  </head>
-  <body>
-    <!--
-    <div class="messages-container" aria-live="polite">
-      <div class="alert alert-success">Success message</div>
-      <div class="alert alert-info">Information message</div>
-      <div class="alert alert-warning">Warning message</div>
-      <div class="alert alert-danger">Error message</div>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About{% endblock %}
+
+{% block extra_header %}
+<link rel="stylesheet" href="{% static 'core/css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<main class="container about-page">
+  <section class="about-copy">
+    <div class="eyebrow">About Pixa</div>
+    <h1>Find images worth keeping.</h1>
+    <p>Pixa is a visual discovery platform built around photography, personal collections and simple sharing. People can upload their own photos, discover work from others, save images they love and build a profile that reflects their taste.</p>
+    <p>The experience takes inspiration from the visual discovery of Pinterest and the photography-first spirit of Unsplash, while keeping the interface quieter and more focused. Images, creators and small details are given room to breathe.</p>
+    <p>Every photo can have a title, a short caption and tags, making it easier to discover related images and return to the things that inspire you.</p>
+    <div class="cta">
+      <a href="{% url 'photos:photos' %}" class="btn btn-red">Explore photos</a>
+      {% if request.user.is_anonymous %}
+        <a href="{% url 'accounts:user-register' %}" class="btn btn-outline">Join Pixa</a>
+      {% endif %}
     </div>
-    -->
-    <header class="topbar">
-      <a class="logo" href="index.html" aria-label="Pixa home">p</a>
-      <form class="search-form" action="" method="GET" role="search">
-        <input class="search" type="search" placeholder="Search..." aria-label="Search">
-      </form>
-      <nav class="nav">
-        <a href="index.html">Explore</a>
-        <a href="about.html">About</a>
-      </nav>
-      <a class="avatar" href="profile.html" aria-label="Profile">A</a>
-    </header>
+  </section>
+</main>
 
-    <main class="container about-page">
-      <section class="about-copy">
-        <div class="eyebrow">About Pixa</div>
-        <h1>Find images worth keeping.</h1>
-        <p>Pixa is a visual discovery platform built around photography, personal collections and simple sharing. People can upload their own photos, discover work from others, save images they love and build a profile that reflects their taste.</p>
-        <p>The experience takes inspiration from the visual discovery of Pinterest and the photography-first spirit of Unsplash, while keeping the interface quieter and more focused. Images, creators and small details are given room to breathe.</p>
-        <p>Every photo can have a title, a short caption and tags, making it easier to discover related images and return to the things that inspire you.</p>
-        <div class="cta">
-          <a class="btn btn-red" href="index.html">Explore photos</a>
-          <a class="btn btn-outline" href="register.html">Join Pixa</a>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="container footer-inner">
-        <span>© 2026 Pixa</span>
-        <span>
-          <a href="about.html">About</a>
-          <span class="footer-dot">·</span>
-          <a href="login.html">Login</a>
-          <span class="footer-dot">·</span>
-          <a href="register.html">Sign up</a>
-        </span>
-      </div>
-    </footer>
-
-    <script src="assets/js/public.js">
-    </script>
-  </body>
-</html>
+{% endblock %}

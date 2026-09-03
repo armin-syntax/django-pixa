@@ -2,15 +2,15 @@
   <div class="container footer-inner">
     <span>© 2026 Pixa</span>
     <span>
-      <a href="{% url 'core:about' %}">About</a>
+      <a href="{% url 'about' %}">About</a>
       <span class="footer-dot">·</span>
       
-      {% if request.user.is_authenticated %}
+      {% if request.user.is_anonymous %}
         <a href="{% url 'accounts:user-login' %}">Login</a>
         <span class="footer-dot">·</span>
         <a href="{% url 'accounts:user-register' %}">Sign up</a>
       {% else %}
-        <a href="{% url 'accounts:user-profile' request.user.username %}">Profile</a>
+        <a href="{{ request.user.get_profile_url }}">Profile</a>
       {% endif %}
     </span>
   </div>

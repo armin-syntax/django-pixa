@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import FileExtensionValidator
+from django.urls import reverse
 
 from utils.paths import user_avatar_upload_path
 from utils.validators import UsernameValidator, NameValidator
@@ -59,6 +60,28 @@ class CustomUser(AbstractUser):
     @property
     def created_since(self):
         return get_time_since(self.created_at)
+
+    # ----- URLS -----
+    def get_profile_url(self):
+        return reverse('accounts:user-profile', args=[self.username])
+
+    def get_profile_about_url(self):
+        return reverse('accounts:user-profile-about', args=[self.username])
+
+    def get_saved_photos_url(self):
+        return reverse('accounts:user-saved-photos', args=[self.username])
+
+    def get_edit_profile_url(self):
+        return reverse('accounts:user-edit-profile', args=[self.username])
+
+    def get_delete_account_url(self):
+        return reverse('accounts:user-delete-account', args=[self.username])
+
+    def get_follow_url(self):
+        return reverse('accounts:user-follow', args=[self.username])
+
+    def get_unfollow_url(self):
+        return reverse('accounts:user-unfollow', args=[self.username])
 
     # ----- COUNTS -----
 

@@ -7,12 +7,12 @@
   
   <nav class="nav">
     <a href="{% url 'photos:photos' %}">Explore</a>
-    <a href="{% url 'core:about' %}">About</a>
+    <a href="{% url 'about' %}">About</a>
   </nav>
   
   {% if request.user.is_authenticated %}
     <a aria-label="Profile" class="avatar" href="{% url 'accounts:user-profile' request.user.username %}">A</a>
   {% else %}
-    <a aria-label="User Login" class="avatar" href="{% url 'accounts:user-login' %}">A</a>
+    <a aria-label="User Login" class="avatar" href="{% url 'accounts:user-login' %}">X</a>
   {% endif %}
 </header>

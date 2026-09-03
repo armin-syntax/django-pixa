@@ -19,10 +19,14 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+from core.views import AboutView
+
 
 urlpatterns = [
     # Django admin panel
     path('admin/', admin.site.urls),
+
+    path('about/', AboutView.as_view(), name='about'),
 
     # Local apps
     path('', include('photos.urls', namespace='photos')),

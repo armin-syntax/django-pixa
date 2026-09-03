@@ -11,7 +11,7 @@
   </head>
   <body>
     
-    {% include 'includes/messages.html %}
+    {% include 'includes/messages.html' %}
     {% include 'includes/header.html' %}
 
     <main>
@@ -20,8 +20,7 @@
 
     {% include 'includes/footer.html' %}
 
-    <script src="assets/js/public.js"></script>
+    <script src="{% static 'public/js/public.js' %}"></script>
     {% block extra_body %}{% endblock %}
-
   </body>
 </html>

@@ -1,9 +1,12 @@
+import os
+
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import FileExtensionValidator
 from django.urls import reverse
 
+from photos.models import Photo
 from utils.paths import user_avatar_upload_path
 from utils.validators import UsernameValidator, NameValidator
 from utils.time import get_time_since
@@ -61,6 +64,13 @@ class CustomUser(AbstractUser):
     def created_since(self):
         return get_time_since(self.created_at)
 
+    @property
+    def has_avatar(self):
+        if not self.avatar or os.path.isfile(self.avatar.path) == False:
+            return False
+
+        return True
+
     # ----- URLS -----
     def get_profile_url(self):
         return reverse('accounts:user-profile', args=[self.username])
@@ -107,6 +117,9 @@ class CustomUser(AbstractUser):
 
     def get_photos(self):
         return self.photos.all()
+
+    def get_saved_photos(self):
+        return Photo.objects.filter(saves__user=self)
 
 
 class Relation(models.Model):

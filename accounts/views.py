@@ -1,9 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import View
 
 from utils.mixins import AnonymousRequiredMixin
+from utils.pagination import get_pagination_context
 
 
 User = get_user_model()
@@ -51,22 +52,33 @@ class UserResetPasswordView(AnonymousRequiredMixin, View):
 class UserProfileView(LoginRequiredMixin, View):
     template_name = 'accounts/profile.html'
 
-    def get(self, request):
-        return render(request, self.template_name)
+    def get(self, request, **kwargs):
+        user = get_object_or_404(User, username=kwargs['username'])
+        return render(request, self.template_name, {
+            'user': user,
+            'page_obj': get_pagination_context(request, user.get_photos(), 20),
+        })
 
 
 class UserProfileAboutView(LoginRequiredMixin, View):
     template_name = 'accounts/profile_about.html'
 
-    def get(self, request):
-        return render(request, self.template_name)
+    def get(self, request, **kwargs):
+        user = get_object_or_404(User, username=kwargs['username'])
+        return render(request, self.template_name, {
+            'user': user,
+        })
 
 
 class UserSavedPhotosView(LoginRequiredMixin, View):
     template_name = 'accounts/profile_saved.html'
 
-    def get(self, request):
-        return render(request, self.template_name)
+    def get(self, request, **kwargs):
+        user = get_object_or_404(User, username=kwargs['username'])
+        return render(request, self.template_name, {
+            'user': user,
+            'page_obj': get_pagination_context(request, user.get_saved_photos(), 20),
+        })
 
 
 class UserEditProfileView(LoginRequiredMixin, View):

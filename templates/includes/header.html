@@ -1,8 +1,16 @@
 <header class="topbar">
-  <a aria-label="Pixa home" class="logo" href="{% url 'photos:photos' %}">p</a>
+  <a href="{% url 'photos:photos' %}" aria-label="Pixa home" class="logo">P</a>
   
-  <form class="search-form" action="" method="GET" role="search">
-    <input aria-label="Search" class="search" placeholder="Search..." type="search">
+  <form action="{% url 'photos:photos' %}" method="GET" role="search" class="search-form">
+    <input
+      aria-label="Search"
+      class="search"
+      placeholder="Search..."
+      type="search"
+      name="search"
+      autocomplete="off"
+      value="{{ request.GET.search }}"
+    >
   </form>
   
   <nav class="nav">
@@ -11,8 +19,8 @@
   </nav>
   
   {% if request.user.is_authenticated %}
-    <a aria-label="Profile" class="avatar" href="{% url 'accounts:user-profile' request.user.username %}">A</a>
+    <a href="{{ request.user.get_profile_url }}" aria-label="Profile" class="avatar">A</a>
   {% else %}
-    <a aria-label="User Login" class="avatar" href="{% url 'accounts:user-login' %}">X</a>
+    <a href="{% url 'accounts:user-login' %}" aria-label="User Login" class="avatar">X</a>
   {% endif %}
 </header>

@@ -30,7 +30,8 @@
   border-radius: 50%;
 
   /* Background */
-  background: #e9eaec;
+  background: #e9eaec;;
+  object-fit: cover;
 
   /* Typography */
   color: #777;

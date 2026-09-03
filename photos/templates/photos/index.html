@@ -16,7 +16,7 @@
 
   <nav aria-label="Photo tags" class="tag-bar">
     {% for tag in tags %}
-      <a href="{% url 'photos:photos' %}?tag={{ tag.slug }}">{{ tag.title }}</a>
+      <a href="{% url 'photos:photos' %}?tag={{ tag.slug }}">{{ tag.name }}</a>
     {% endfor %}
 
     <a href="{% url 'photos:tags' %}" class="more-link">More</a>
@@ -24,29 +24,31 @@
 </section>
 
 <section class="container">
-  <div class="masonry">
-    {% for photo in photos %}
-      <article class="card">
-        <a href="{{ photo.get_absolute_url }}" class="card-link">
-          <img alt="{{ photo.title }}" loading="lazy" src="{{ photo.image.url }}">
-        </a>
-        <div class="card-menu">
-          <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-          <div class="card-menu-dropdown">
-            <a href="{{ photo.image.url }}">Download</a>
+  {% with photos=page_obj %}
+    <div class="masonry">
+      {% for photo in photos %}
+        <article class="card">
+          <a class="card-link" href="{{ photo.get_absolute_url }}">
+            <img alt="{{ photo.title }}" loading="lazy" src="{{ photo.image.url }}">
+          </a>
+          <div class="card-menu">
+            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
+            <div class="card-menu-dropdown">
+              <a href="{{ photo.image.url }}">Download</a>
+            </div>
           </div>
-        </div>
-        <div class="card-overlay">
-          <div class="card-bottom-box">
-            <a href="{{ photo.get_absolute_url }}" class="card-title">{{ photo.title }}</a>
-            <a href="{{ photo.user.get_profile_url }}" class="card-author">by {{ photo.user.username }}</a>
+          <div class="card-overlay">
+            <div class="card-bottom-box">
+              <a class="card-title" href="{{ photo.get_absolute_url }}">{{ photo.title }}</a>
+              <a class="card-author" href="{{ photo.user.get_profile_url }}">by {{ photo.user.username }}</a>
+            </div>
           </div>
-        </div>
-      </article>
-    {% endfor %}
-  </div>
+        </article>
+      {% endfor %}
+    </div>
 
-  {% include 'includes/pagination.html' %}
+    {% include 'includes/pagination.html' %}
+  {% endwith %}
 </section>
 
 {% endblock%}

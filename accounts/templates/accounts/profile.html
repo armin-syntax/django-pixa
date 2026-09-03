@@ -11,7 +11,11 @@
 
 <main class="container profile-page">
   <section class="profile-head">
-    <div class="profile-avatar">{{ user.full_name|first }}</div>
+    {% if not user.has_avatar %}
+      <div class="profile-avatar">{{ user.full_name|first }}</div>
+    {% else %}
+      <img src="{{ user.avatar.url }}" alt="{{ user.full_name }}" class="profile-avatar">
+    {% endif %}
 
     <div class="profile-info">
       <h1>{{ user.full_name }}</h1>
@@ -19,15 +23,15 @@
 
       <div class="stats">
         <span>
-          <strong>{{ user.get_photos_count }}</strong>
+          <strong>{{ user.photos_count }}</strong>
           photos
         </span>
         <span>
-          <strong>{{ user.get_followers_count }}</strong>
+          <strong>{{ user.followers_count }}</strong>
           followers
         </span>
         <span>
-          <strong>{{ user.get_following_count }}</strong>
+          <strong>{{ user.following_count }}</strong>
           following
         </span>
       </div>
@@ -38,12 +42,12 @@
         <details class="settings-menu">
           <summary class="btn btn-outline">Settings</summary>
           <div class="settings-panel">
-            <a href="{{ user.get_logout_url }}">Log out</a>
+            <a href="{% url 'accounts:user-logout' %}">Log out</a>
             <a href="{{ user.get_edit_profile_url }}">Edit profile</a>
             <a href="{{ user.get_delete_account_url }}" class="delete-link">Delete account</a>
           </div>
         </details>
-        <a href="{% url 'photos:upload' %}" class="btn btn-outline">Upload</a>
+        <a href="{% url 'photos:photo-upload' %}" class="btn btn-outline">Upload</a>
       {% else %}
         <a href="{{ user.get_follow_url }}" class="btn btn-red follow-action">Follow</a>
       {% endif %}
@@ -51,37 +55,39 @@
   </section>
 
   <nav class="tabs profile-tabs">
-    <a href="{{ user.get_photos_url }}" class="">Photos</a>
+    <a href="{{ user.get_profile_url }}" class="active">Photos</a>
     {% if request.user == user %}
       <a href="{{ user.get_saved_photos_url }}" class="">Saved</a>
     {% endif %}
-    <a href="{{ user.get_about_url }}" class="">About</a> <!-- active -->
+    <a href="{{ user.get_profile_about_url }}" class="">About</a>
   </nav>
 
-  <div class="masonry">
-    {% for photo in saved_photos %}
-      <article class="card">
-        <a class="card-link" href="{{ photo.get_absolute_url }}">
-          <img alt="{{ photo.title }}" loading="lazy" src="{{ photo.image.url }}">
-        </a>
-        <div class="card-menu">
-          <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-          <div class="card-menu-dropdown">
-            <a href="{{ photo.image.url }}">Download</a>
-            <a href="{{ photo.get_delete_url }}" class="delete-photo-link">Delete</a>
+  {% with photos=page_obj %}
+    <div class="masonry">
+      {% for photo in photos %}
+        <article class="card">
+          <a class="card-link" href="{{ photo.get_absolute_url }}">
+            <img alt="{{ photo.title }}" loading="lazy" src="{{ photo.image.url }}">
+          </a>
+          <div class="card-menu">
+            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
+            <div class="card-menu-dropdown">
+              <a href="{{ photo.image.url }}">Download</a>
+              <a href="{{ photo.get_delete_url }}" class="delete-photo-link">Delete</a>
+            </div>
           </div>
-        </div>
-        <div class="card-overlay">
-          <div class="card-bottom-box">
-            <a class="card-title" href="{{ photo.get_absolute_url }}">{{ photo.title }}</a>
-            <a class="card-author" href="{{ photo.user.get_profile_url }}">by {{ photo.user.username }}</a>
+          <div class="card-overlay">
+            <div class="card-bottom-box">
+              <a class="card-title" href="{{ photo.get_absolute_url }}">{{ photo.title }}</a>
+              <a class="card-author" href="{{ photo.user.get_profile_url }}">by {{ photo.user.username }}</a>
+            </div>
           </div>
-        </div>
-      </article>
-    {% endfor %}
-  </div>
+        </article>
+      {% endfor %}
+    </div>
 
-  {% include 'includes/pagination.html' %}
+    {% include 'includes/pagination.html' %}
+  {% endwith %}
 </main>
 
 {% endblock %}

@@ -19,8 +19,8 @@
   </nav>
   
   {% if request.user.is_authenticated %}
-    <a href="{{ request.user.get_profile_url }}" aria-label="Profile" class="avatar">A</a>
+    <a href="{{ request.user.get_profile_url }}" aria-label="Profile" class="avatar">{{ request.user.full_name|first }}</a>
   {% else %}
-    <a href="{% url 'accounts:user-login' %}" aria-label="User Login" class="avatar">X</a>
+    <a href="{% url 'accounts:user-login' %}" aria-label="User Login" class="avatar">?</a>
   {% endif %}
 </header>

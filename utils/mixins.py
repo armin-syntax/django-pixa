@@ -1,4 +1,3 @@
-from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import AccessMixin
 from django.shortcuts import redirect, get_object_or_404
@@ -18,25 +17,25 @@ class AnonymousRequiredMixin(AccessMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
-class SelfForbiddenMixin:
+class SelfForbiddenMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         user = get_object_or_404(User, username=kwargs['username'])
 
         if request.user == user:
-            return redirect('photos:photos')
+            return redirect(user.get_profile_url())
         return super().dispatch(request, *args, **kwargs)
 
 
-class OwnerRequiredMixin:
+class OwnerRequiredMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         user = get_object_or_404(User, username=kwargs['username'])
 
         if request.user != user:
-            return redirect('photos:photos')
+            return redirect(user.get_profile_url())
         return super().dispatch(request, *args, **kwargs)
 
 
-class PhotoOwnerRequiredMixin:
+class PhotoOwnerRequiredMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         photo = get_object_or_404(Photo, slug=kwargs['slug'])
 

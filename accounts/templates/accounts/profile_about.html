@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+
 {% load static %}
+{% load account_tags %}
 
 {% block title %}About {{ user.full_name }}{% endblock %}
 
@@ -49,7 +51,12 @@
         </details>
         <a href="{% url 'photos:photo-upload' %}" class="btn btn-outline">Upload</a>
       {% else %}
-        <a href="{{ user.get_follow_url }}" class="btn btn-red follow-action">Follow</a>
+        {% is_followed_by request.user user as is_following %}
+        {% if is_following %}
+          <a href="{{ user.get_unfollow_url }}" class="btn btn-red follow-action">Unfollow</a>
+        {% else %}
+          <a href="{{ user.get_follow_url }}" class="btn btn-red follow-action">Follow</a>
+        {% endif %}
       {% endif %}
     </div>
   </section>
@@ -63,9 +70,9 @@
   </nav>
 
   <section class="profile-about">
-    <p>
-      {{ user.bio }}
-    </p>
+    {% if user.bio %}
+      <p>{{ user.bio }}</p>
+    {% endif %}
   </section>
 </main>
 

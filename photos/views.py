@@ -1,10 +1,11 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
 from utils.pagination import get_pagination_context
-from .models import Tag, Photo
+from .models import Tag, Photo, Like, Save
 
 
 class PhotoListView(View):
@@ -67,16 +68,46 @@ class PhotoDeleteView(LoginRequiredMixin, View):
 
 
 class PhotoLikeView(LoginRequiredMixin, View):
-    def get(self, request): pass
+    def get(self, request, **kwargs):
+        photo = get_object_or_404(Photo, slug=kwargs['slug'])
+
+        if not Like.objects.filter(photo=photo, user=request.user).exists():
+            Like.objects.create(photo=photo, user=request.user)
+            # messages.success(request, 'Photo liked successfully', 'success')
+        
+        return redirect(photo.get_absolute_url())
 
 
 class PhotoUnlikeView(LoginRequiredMixin, View):
-    def get(self, request): pass
+    def get(self, request, **kwargs):
+        photo = get_object_or_404(Photo, slug=kwargs['slug'])
+        like = Like.objects.filter(photo=photo, user=request.user)
+
+        if like.exists():
+            like.delete()
+            # messages.success(request, 'Photo unliked successfully', 'success')
+        
+        return redirect(photo.get_absolute_url())
 
 
 class PhotoSaveView(LoginRequiredMixin, View):
-    def get(self, request): pass
+    def get(self, request, **kwargs):
+        photo = get_object_or_404(Photo, slug=kwargs['slug'])
+
+        if not Save.objects.filter(user=request.user, photo=photo).exists():
+            Save.objects.create(user=request.user, photo=photo)
+            # messages.success(request, 'Photo saved successfully', 'success')
+        
+        return redirect(photo.get_absolute_url())
 
 
 class PhotoUnsaveView(LoginRequiredMixin, View):
-    def get(self, request): pass
+    def get(self, request, **kwargs):
+        photo = get_object_or_404(Photo, slug=kwargs['slug'])
+        save = Save.objects.filter(user=request.user, photo=photo)
+
+        if save.exists():
+            save.delete()
+            # messages.success(request, 'Photo unsaved successfully', 'success')
+        
+        return redirect(photo.get_absolute_url())

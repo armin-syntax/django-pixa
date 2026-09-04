@@ -1,10 +1,13 @@
-from django.contrib.auth import get_user_model
+from django.contrib import messages
+from django.contrib.auth import get_user_model, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
-from utils.mixins import AnonymousRequiredMixin
+from utils.mixins import AnonymousRequiredMixin, SelfForbiddenMixin, OwnerRequiredMixin
 from utils.pagination import get_pagination_context
+from .models import Relation
+from .forms import UserRegisterForm, UserLoginForm, UserEditProfileForm
 
 
 User = get_user_model()
@@ -12,20 +15,50 @@ User = get_user_model()
 
 class UserRegisterView(AnonymousRequiredMixin, View):
     template_name = 'accounts/register.html'
+    form_class = UserRegisterForm
 
     def get(self, request):
-        return render(request, self.template_name)
+        return render(request, self.template_name, {'form': self.form_class()})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if not form.is_valid():
+            return render(request, self.template_name, {'form': form})
+
+        form.save()
+        messages.success(request, 'Account created successfully. Please sign in.', 'success')
+        return redirect('accounts:user-login')
 
 
 class UserLoginView(AnonymousRequiredMixin, View):
     template_name = 'accounts/login.html'
+    form_class = UserLoginForm
 
     def get(self, request):
-        return render(request, self.template_name)
+        return render(request, self.template_name, {'form': self.form_class()})
 
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if not form.is_valid():
+            return render(request, self.template_name, {'form': form})
+
+        user = form.user
+        login(request, user)
+
+        messages.success(request, 'Logged in successfully.', 'success')
+
+        next_url = request.GET.get('next')
+        if next_url:
+            return redirect(next_url)
+
+        return redirect('photos:photos')
 
 class UserLogoutView(LoginRequiredMixin, View):
-    def get(self, request): pass
+    def get(self, request):
+        logout(request)
+        return redirect('photos:photos')
 
 
 class UserForgotPasswordView(AnonymousRequiredMixin, View):
@@ -81,23 +114,62 @@ class UserSavedPhotosView(LoginRequiredMixin, View):
         })
 
 
-class UserEditProfileView(LoginRequiredMixin, View):
+class UserEditProfileView(LoginRequiredMixin, OwnerRequiredMixin, View):
     template_name = 'accounts/edit_profile.html'
+    form_class = UserEditProfileForm
 
-    def get(self, request):
-        return render(request, self.template_name)
+    def setup(self, request, *args, **kwargs):
+        self.user_instance = get_object_or_404(User, username=kwargs['username'])
+        return super().setup(request, *args, **kwargs)
+
+    def get(self, request, **kwargs):
+        user = self.user_instance
+        return render(request, self.template_name, {
+            'form': self.form_class(initial={
+                'username': user.username,
+                'email': user.email,
+                'full_name': user.full_name,
+                'bio': user.bio,
+            }, user=user),
+        })
+
+    def post(self, request, **kwargs):
+        user = self.user_instance
+        form = self.form_class(request.POST, request.FILES, user=user)
+
+        if not form.is_valid():
+            return render(request, self.template_name, {'form': form})
+
+        form.save()
+        # messages.success(request, 'Profile edited successfully.', 'success')
+        return redirect('accounts:user-profile', username=user.username)
 
 
-class UserDeleteAccountView(LoginRequiredMixin, View):
+class UserDeleteAccountView(LoginRequiredMixin, OwnerRequiredMixin, View):
     template_name = 'accounts/delete_account.html'
 
     def get(self, request):
         return render(request, self.template_name)
 
 
-class UserFollowView(LoginRequiredMixin, View):
-    def get(self, request): pass
+class UserFollowView(LoginRequiredMixin, SelfForbiddenMixin, View):
+    def get(self, request, **kwargs):
+        user = get_object_or_404(User, username=kwargs['username'])
+
+        if not Relation.objects.filter(from_user=request.user, to_user=user).exists():
+            Relation.objects.create(from_user=request.user, to_user=user)
+            # messages.success(request, f'You followed @{user.username} successfully', 'success')
+
+        return redirect(user.get_profile_url())
 
 
-class UserUnfollowView(LoginRequiredMixin, View):
-    def get(self, request): pass
+class UserUnfollowView(LoginRequiredMixin, SelfForbiddenMixin, View):
+    def get(self, request, **kwargs):
+        user = get_object_or_404(User, username=kwargs['username'])
+        relation = Relation.objects.filter(from_user=request.user, to_user=user)
+        
+        if relation:
+            relation.delete()
+            # messages.success(request, f'You unfollowed @{user.username} successfully', 'success')
+
+        return redirect(user.get_profile_url())

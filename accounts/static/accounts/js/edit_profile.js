@@ -1,4 +1,4 @@
-const profileImage = document.getElementById('profile-image');
+const profileImage = document.getElementById('id_avatar');
 const profilePreview = document.getElementById('profile-preview');
 
 profileImage?.addEventListener('change', function () {
@@ -7,10 +7,19 @@ profileImage?.addEventListener('change', function () {
     this.value = '';
     return;
   }
-  profilePreview.src = URL.createObjectURL(file);
+
+  if (profilePreview.tagName === 'DIV') {
+    const img = document.createElement('img');
+    img.id = 'profile-preview';
+    img.alt = 'Profile picture';
+    img.src = URL.createObjectURL(file);
+    profilePreview.parentNode.replaceChild(img, profilePreview);
+  } else {
+    profilePreview.src = URL.createObjectURL(file);
+  }
 });
 
-const bio = document.getElementById('bio');
+const bio = document.getElementById('id_bio');
 const bioCount = document.getElementById('bio-count');
 
 function updateBioCount() {

@@ -101,7 +101,9 @@ img {
 .alert {
   /* Box Model */
   width: 100%;
+  /* width: fit-content; */
   padding: 0.65rem 0.8rem;
+  /* margin: auto; */
 
   /* Box Model - Border */
   border: 1px solid var(--line);

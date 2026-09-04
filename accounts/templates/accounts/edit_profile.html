@@ -17,43 +17,60 @@
       <p>Update your profile information.</p>
     </div>
 
-    <div class="profile-photo-section">
-      <div class="profile-photo">
-        <img id="profile-preview" src="assets/images/1.jpg" alt="Profile picture">
-      </div>
-      <div class="profile-photo-actions">
-        <input id="profile-image" name="profile_image" type="file" accept="image/*" hidden="">
-        <label for="profile-image" class="photo-action add" aria-label="Change profile picture" title="Change profile picture">+</label>
-        <a href="{{ request.user.get_avatar_delete_url }}" class="photo-action remove" aria-label="Delete profile picture" title="Delete profile picture">−</a>
-      </div>
-    </div>
-
     <form action="" method="POST" class="edit-profile-form" enctype="multipart/form-data">
-      <!-- <div class="errors-container">
-        <div class="alert alert-danger">Error message</div>
-      </div> -->
-      
+      {% csrf_token %}
+
+      <div class="profile-photo-section">
+        <div class="profile-photo">
+          {% if request.user.has_avatar %}
+            <img id="profile-preview" src="{{ request.user.avatar.url }}" alt="{{ request.user.full_name }}">
+          {% else %}
+            <div id="profile-preview" class="profile-avatar-placeholder">
+              {{ request.user.full_name|first }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="profile-photo-actions">
+          <input id="id_avatar" name="avatar" type="file" accept="image/*" hidden>
+          <label for="id_avatar" class="photo-action add" aria-label="Change profile picture" title="Change profile picture">+</label>
+          <a href="{{ request.user.get_avatar_delete_url }}" class="photo-action remove" aria-label="Delete profile picture" title="Delete profile picture">−</a>
+        </div>
+      </div>
+
+      {% if form.errors %}
+        <div class="errors-container">
+          {% for field in form %}
+            {% for error in field.errors %}
+              <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">{{ error }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
       <div class="form-group">
-        <label for="username">Username</label>
-        <input id="username" name="username" class="field" type="text" value="armin.syntax" maxlength="30" required="" placeholder="Enter your username">
+        <label for="id_username">Username</label>
+        {{ form.username }}
       </div>
 
       <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" name="email" class="field" type="email" value="armin@example.com" required="" placeholder="Enter your email address">
+        <label for="id_email">Email</label>
+        {{ form.email }}
       </div>
 
       <div class="form-group">
-        <label for="full_name">Full name</label>
-        <input id="full_name" name="full_name" class="field" type="text" value="Armin Emami" maxlength="100" placeholder="Enter your full name">
+        <label for="id_full_name">Full name</label>
+        {{ form.full_name }}
       </div>
 
       <div class="form-group">
         <div class="label-row">
-          <label for="bio">Bio</label>
+          <label for="id_bio">Bio</label>
           <span id="bio-count" class="counter">0 / 500</span>
         </div>
-        <textarea id="bio" name="bio" class="field" maxlength="500" placeholder="Write a short bio...">Designer, photographer and lover of quiet places.</textarea>
+        {{ form.bio }}
       </div>
 
       <div class="form-actions">

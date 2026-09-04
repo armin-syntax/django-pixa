@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+
 {% load static %}
+{% load photo_tags %}
 
 {% block title %}{{ photo.title }}{% endblock %}
 
@@ -40,15 +42,25 @@
       </div>
 
       <div class="like-row">
-        <a href="{{ photo.get_like_url }}" class="btn btn-red like-button">Like</a>
-        <span class="like-count">{{ photo.get_likes_count }}</span>
+        {% is_liked_by request.user photo as is_liked %}
+        {% if is_liked %}
+          <a href="{{ photo.get_unlike_url }}" class="btn btn-red like-button">Unlike</a>
+        {% else %}
+          <a href="{{ photo.get_like_url }}" class="btn btn-red like-button">Like</a>
+        {% endif %}
+        <span class="like-count">{{ photo.likes_count }} likes</span>
       </div>
 
       <div class="divider"></div>
 
       <div class="action-buttons">
         <a href="{{ photo.image.url }}" class="btn btn-outline w-100 download-photo">Download</a>
-        <a href="{{ photo.get_save_url }}" class="btn btn-outline w-100 save-photo" data-saved="0">Save</a>
+        {% is_saved_by request.user photo as is_saved %}
+        {% if is_saved %}
+          <a href="{{ photo.get_unsave_url }}" class="btn btn-outline w-100 save-photo" data-saved="0">Unsave</a>
+        {% else %}
+          <a href="{{ photo.get_save_url }}" class="btn btn-outline w-100 save-photo" data-saved="0">Save</a>
+        {% endif %}
       </div>
     </aside>
   </section>

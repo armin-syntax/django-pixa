@@ -80,7 +80,7 @@
             <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
             <div class="card-menu-dropdown">
               <a href="{{ photo.image.url }}">Download</a>
-              <a href="" class="remove-photo-link">Remove</a>
+              <a href="{{ photo.get_unsave_url }}?next={{ request.path }}" class="remove-photo-link">Remove</a>
             </div>
           </div>
           <div class="card-overlay">

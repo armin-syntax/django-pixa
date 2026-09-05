@@ -9,7 +9,7 @@ if (tagsDataElement) {
     }
 }
 
-const photoInput = document.getElementById('photo');
+const photoInput = document.getElementById('id_image');
 const fileName = document.getElementById('file-name');
 const fileField = document.querySelector('.file-field');
 
@@ -21,18 +21,11 @@ photoInput?.addEventListener('change', function () {
         fileField.classList.remove('has-file');
         return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-        alert('File size must be less than 5MB.');
-        this.value = '';
-        fileName.textContent = 'Choose a photo...';
-        fileField.classList.remove('has-file');
-        return;
-    }
     fileName.textContent = file.name;
     fileField.classList.add('has-file');
 });
 
-const caption = document.getElementById('caption');
+const caption = document.getElementById('id_caption');
 const captionCount = document.getElementById('caption-count');
 
 caption?.addEventListener('input', () => {
@@ -50,13 +43,13 @@ caption?.addEventListener('input', () => {
 const tagInput = document.getElementById('tag-input');
 const selectedTags = document.getElementById('selected-tags');
 const suggestions = document.getElementById('tag-suggestions');
-const hiddenInputs = document.getElementById('tag-hidden-inputs');
+const hiddenInput = document.getElementById('id_tags');
 
 let tags = [];
 
 function renderTags() {
     selectedTags.innerHTML = '';
-    hiddenInputs.innerHTML = '';
+    const tagString = tags.join(',');
 
     tags.forEach((tag) => {
         const chip = document.createElement('span');
@@ -69,13 +62,11 @@ function renderTags() {
         });
 
         selectedTags.appendChild(chip);
-
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'tags';
-        input.value = tag;
-        hiddenInputs.appendChild(input);
     });
+
+    if (hiddenInput) {
+        hiddenInput.value = tagString;
+    }
 }
 
 function addTag(value) {
@@ -87,10 +78,6 @@ function addTag(value) {
     }
     if (tags.length >= 8) {
         alert('Maximum 8 tags allowed.');
-        return;
-    }
-    if (!availableTags.includes(tag)) {
-        alert('This tag is not available.');
         return;
     }
     tags.push(tag);
@@ -106,7 +93,7 @@ tagInput?.addEventListener('input', () => {
 
     const filtered = availableTags
         .filter((tag) => tag.toLowerCase().includes(query))
-        .filter((tag) => !tags.includes(tag))
+        .filter((tag) => !tags.includes(tag.toLowerCase()))
         .slice(0, 5);
 
     filtered.forEach((tag) => {
@@ -123,7 +110,7 @@ tagInput?.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         event.preventDefault();
         const query = tagInput.value.trim().toLowerCase();
-        if (query && availableTags.includes(query) && !tags.includes(query)) {
+        if (query) {
             addTag(query);
         }
     }
@@ -132,20 +119,6 @@ tagInput?.addEventListener('keydown', (event) => {
 document.addEventListener('click', (event) => {
     if (!event.target.closest('.tags-input') && !event.target.closest('.tag-suggestions')) {
         suggestions.innerHTML = '';
-    }
-});
-
-document.querySelector('.upload-form')?.addEventListener('submit', function(event) {
-    const file = document.getElementById('photo').files[0];
-    if (!file) {
-        event.preventDefault();
-        alert('Please select a photo.');
-        return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-        event.preventDefault();
-        alert('File size must be less than 5MB.');
-        return;
     }
 });
 

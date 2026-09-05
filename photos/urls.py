@@ -5,7 +5,7 @@ from . import views
 
 app_name = 'photos'
 urlpatterns = [
-    path('', views.PhotoListView.as_view(), name='photos'),
+    path('', views.PhotosView.as_view(), name='photos'),
     path('tags/', views.TagListView.as_view(), name='tags'),
     path('upload/', views.PhotoUploadView.as_view(), name='photo-upload'),
     path('<slug:slug>/', views.PhotoDetailView.as_view(), name='photo-detail'),

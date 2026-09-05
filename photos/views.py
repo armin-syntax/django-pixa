@@ -1,4 +1,3 @@
-from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
@@ -6,9 +5,10 @@ from django.views import View
 
 from utils.pagination import get_pagination_context
 from .models import Tag, Photo, Like, Save
+from .forms import PhotoUploadForm
 
 
-class PhotoListView(View):
+class PhotosView(View):
     template_name = 'photos/index.html'
 
     def get(self, request):
@@ -58,13 +58,37 @@ class PhotoDetailView(View):
 
 class PhotoUploadView(LoginRequiredMixin, View):
     template_name = 'photos/upload.html'
+    form_class = PhotoUploadForm
 
     def get(self, request):
-        return render(request, self.template_name)
+        form = self.form_class()
+        tags = list(Tag.objects.values_list('name', flat=True))
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'tags': tags,
+        })
+
+    def post(self, request):
+        form = self.form_class(request.POST, request.FILES)
+        
+        if not form.is_valid():
+            tags = list(Tag.objects.values_list('name', flat=True))
+            return render(request, self.template_name, {
+                'form': form,
+                'tags': tags,
+            })
+        
+        photo = form.save(request.user)
+        return redirect(photo.get_absolute_url())
 
 
 class PhotoDeleteView(LoginRequiredMixin, View):
-    def get(self, request): pass
+    def get(self, request, **kwargs):
+        get_object_or_404(Photo, slug=kwargs['slug']).delete()
+
+        next_url = request.POST.get('next') or request.GET.get('next')
+        return redirect(next_url or request.user.get_profile_url())
 
 
 class PhotoLikeView(LoginRequiredMixin, View):
@@ -73,9 +97,9 @@ class PhotoLikeView(LoginRequiredMixin, View):
 
         if not Like.objects.filter(photo=photo, user=request.user).exists():
             Like.objects.create(photo=photo, user=request.user)
-            # messages.success(request, 'Photo liked successfully', 'success')
         
-        return redirect(photo.get_absolute_url())
+        next_url = request.POST.get('next') or request.GET.get('next')
+        return redirect(next_url or photo.get_absolute_url())
 
 
 class PhotoUnlikeView(LoginRequiredMixin, View):
@@ -85,9 +109,9 @@ class PhotoUnlikeView(LoginRequiredMixin, View):
 
         if like.exists():
             like.delete()
-            # messages.success(request, 'Photo unliked successfully', 'success')
         
-        return redirect(photo.get_absolute_url())
+        next_url = request.POST.get('next') or request.GET.get('next')
+        return redirect(next_url or photo.get_absolute_url())
 
 
 class PhotoSaveView(LoginRequiredMixin, View):
@@ -96,9 +120,9 @@ class PhotoSaveView(LoginRequiredMixin, View):
 
         if not Save.objects.filter(user=request.user, photo=photo).exists():
             Save.objects.create(user=request.user, photo=photo)
-            # messages.success(request, 'Photo saved successfully', 'success')
-        
-        return redirect(photo.get_absolute_url())
+
+        next_url = request.POST.get('next') or request.GET.get('next')
+        return redirect(next_url or photo.get_absolute_url())
 
 
 class PhotoUnsaveView(LoginRequiredMixin, View):
@@ -108,6 +132,6 @@ class PhotoUnsaveView(LoginRequiredMixin, View):
 
         if save.exists():
             save.delete()
-            # messages.success(request, 'Photo unsaved successfully', 'success')
         
-        return redirect(photo.get_absolute_url())
+        next_url = request.POST.get('next') or request.GET.get('next')
+        return redirect(next_url or photo.get_absolute_url())

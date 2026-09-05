@@ -27,7 +27,7 @@ class UserRegisterView(AnonymousRequiredMixin, View):
             return render(request, self.template_name, {'form': form})
 
         form.save()
-        messages.success(request, 'Account created successfully. Please sign in.', 'success')
+        # messages.success(request, 'Account created successfully. Please sign in.', 'success')
         return redirect('accounts:user-login')
 
 
@@ -47,7 +47,7 @@ class UserLoginView(AnonymousRequiredMixin, View):
         user = form.user
         login(request, user)
 
-        messages.success(request, 'Logged in successfully.', 'success')
+        # messages.success(request, 'Logged in successfully.', 'success')
 
         next_url = request.GET.get('next')
         if next_url:
@@ -82,7 +82,7 @@ class UserResetPasswordView(AnonymousRequiredMixin, View):
         return render(request, self.template_name)
 
 
-class UserProfileView(LoginRequiredMixin, View):
+class UserProfileView(View):
     template_name = 'accounts/profile.html'
 
     def get(self, request, **kwargs):
@@ -93,7 +93,7 @@ class UserProfileView(LoginRequiredMixin, View):
         })
 
 
-class UserProfileAboutView(LoginRequiredMixin, View):
+class UserProfileAboutView(View):
     template_name = 'accounts/profile_about.html'
 
     def get(self, request, **kwargs):
@@ -141,14 +141,23 @@ class UserEditProfileView(LoginRequiredMixin, OwnerRequiredMixin, View):
             return render(request, self.template_name, {'form': form})
 
         form.save()
-        # messages.success(request, 'Profile edited successfully.', 'success')
         return redirect('accounts:user-profile', username=user.username)
+
+
+class UserDeleteAvatarView(LoginRequiredMixin, OwnerRequiredMixin, View):
+    def get(self, request, **kwargs):
+        user = get_object_or_404(User, username=kwargs['username'])
+
+        if user.avatar:
+            user.avatar.delete()
+
+        return redirect(user.get_edit_profile_url())
 
 
 class UserDeleteAccountView(LoginRequiredMixin, OwnerRequiredMixin, View):
     template_name = 'accounts/delete_account.html'
 
-    def get(self, request):
+    def get(self, request, **kwargs):
         return render(request, self.template_name)
 
 
@@ -158,7 +167,6 @@ class UserFollowView(LoginRequiredMixin, SelfForbiddenMixin, View):
 
         if not Relation.objects.filter(from_user=request.user, to_user=user).exists():
             Relation.objects.create(from_user=request.user, to_user=user)
-            # messages.success(request, f'You followed @{user.username} successfully', 'success')
 
         return redirect(user.get_profile_url())
 
@@ -170,6 +178,5 @@ class UserUnfollowView(LoginRequiredMixin, SelfForbiddenMixin, View):
         
         if relation:
             relation.delete()
-            # messages.success(request, f'You unfollowed @{user.username} successfully', 'success')
 
         return redirect(user.get_profile_url())

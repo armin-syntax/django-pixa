@@ -51,9 +51,13 @@
         </details>
         <a href="{% url 'photos:photo-upload' %}" class="btn btn-outline">Upload</a>
       {% else %}
-        {% is_followed_by request.user user as is_following %}
-        {% if is_following %}
-          <a href="{{ user.get_unfollow_url }}" class="btn btn-red follow-action">Unfollow</a>
+        {% if request.user.is_authenticated %}
+          {% is_followed_by request.user user as is_following %}
+          {% if is_following %}
+            <a href="{{ user.get_unfollow_url }}" class="btn btn-red follow-action">Unfollow</a>
+          {% else %}
+            <a href="{{ user.get_follow_url }}" class="btn btn-red follow-action">Follow</a>
+          {% endif %}
         {% else %}
           <a href="{{ user.get_follow_url }}" class="btn btn-red follow-action">Follow</a>
         {% endif %}
@@ -80,7 +84,7 @@
             <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
             <div class="card-menu-dropdown">
               <a href="{{ photo.image.url }}">Download</a>
-              <a href="{{ photo.get_delete_url }}" class="delete-photo-link">Delete</a>
+              <a href="{{ photo.get_delete_url }}?next={{ request.path }}" class="delete-photo-link">Delete</a>
             </div>
           </div>
           <div class="card-overlay">

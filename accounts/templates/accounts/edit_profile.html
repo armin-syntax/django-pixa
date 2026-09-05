@@ -33,7 +33,7 @@
         <div class="profile-photo-actions">
           <input id="id_avatar" name="avatar" type="file" accept="image/*" hidden>
           <label for="id_avatar" class="photo-action add" aria-label="Change profile picture" title="Change profile picture">+</label>
-          <a href="{{ request.user.get_avatar_delete_url }}" class="photo-action remove" aria-label="Delete profile picture" title="Delete profile picture">−</a>
+          <a href="{{ request.user.get_delete_avatar_url }}" class="photo-action remove" aria-label="Delete profile picture" title="Delete profile picture">−</a>
         </div>
       </div>
 

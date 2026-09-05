@@ -17,29 +17,40 @@
     </div>
 
     <form action="" method="POST" enctype="multipart/form-data" class="upload-form">
-      <!-- <div class="errors-container">
-        <div class="alert alert-danger">Error Message</div>
-      </div> -->
+      {% csrf_token %}
+
+      {% if form.errors %}
+        <div class="errors-container">
+          {% for field in form %}
+            {% for error in field.errors %}
+              <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">{{ error }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
 
       <div class="form-group">
-        <label for="photo">Photo</label>
+        <label for="id_image">Photo</label>
         <div class="file-field">
-          <input id="photo" name="image" type="file" accept="image/jpeg,image/png,image/webp" required>
+          {{ form.image }}
           <span id="file-name">Choose a photo...</span>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="title">Title</label>
-        <input id="title" name="title" class="field" type="text" maxlength="100" placeholder="Give your photo a title" required>
+        <label for="id_title">Title</label>
+        {{ form.title }}
       </div>
 
       <div class="form-group">
         <div class="label-row">
-          <label for="caption">Caption</label>
+          <label for="id_caption">Caption</label>
           <span id="caption-count" class="counter">0 / 200</span>
         </div>
-        <textarea id="caption" name="caption" class="field" maxlength="200" placeholder="Write a short caption..."></textarea>
+        {{ form.caption }}
       </div>
 
       <div class="form-group">
@@ -49,7 +60,7 @@
           <input id="tag-input" type="text" placeholder="Add a tag..." autocomplete="off">
         </div>
         <div id="tag-suggestions" class="tag-suggestions"></div>
-        <div id="tag-hidden-inputs"></div>
+        {{ form.tags }}
       </div>
 
       <div class="upload-actions">

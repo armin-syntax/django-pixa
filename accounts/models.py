@@ -84,6 +84,9 @@ class CustomUser(AbstractUser):
     def get_edit_profile_url(self):
         return reverse('accounts:user-edit-profile', args=[self.username])
 
+    def get_delete_avatar_url(self):
+        return reverse('accounts:user-delete-avatar', args=[self.username])
+
     def get_delete_account_url(self):
         return reverse('accounts:user-delete-account', args=[self.username])
 

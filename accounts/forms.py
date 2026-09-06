@@ -18,6 +18,9 @@ class UserBaseForm(forms.Form):
             'class': 'field',
             'autocomplete': 'username',
         }),
+        error_messages={
+            'required': 'Username is required.',
+        },
     )
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={
@@ -25,6 +28,9 @@ class UserBaseForm(forms.Form):
             'class': 'field',
             'autocomplete': 'email',
         }),
+        error_messages={
+            'required': 'Email is required.',
+        },
     )
     full_name = forms.CharField(
         max_length=100,
@@ -34,6 +40,9 @@ class UserBaseForm(forms.Form):
             'class': 'field',
             'autocomplete': 'name',
         }),
+        error_messages={
+            'required': 'Full name is required.',
+        },
     )
 
 
@@ -59,14 +68,18 @@ class UserRegisterForm(UserBaseForm):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
+
         if username and User.objects.filter(username=username).exists():
             raise ValidationError('This username already exists.')
+
         return username
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
+
         if email and User.objects.filter(email=email).exists():
             raise ValidationError('This email address already exists.')
+
         return email
 
     def clean(self):
@@ -76,6 +89,7 @@ class UserRegisterForm(UserBaseForm):
 
         if password and confirm_password and password != confirm_password:
             raise ValidationError('Passwords do not match.')
+
         return cd
 
     def save(self):
@@ -156,14 +170,18 @@ class UserEditProfileForm(UserBaseForm):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
+
         if username and User.objects.filter(username=username).exclude(pk=self.user.pk).exists():
             raise ValidationError('This username already exists.')
+
         return username
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
+
         if email and User.objects.filter(email=email).exclude(pk=self.user.pk).exists():
             raise ValidationError('This email address already exists.')
+
         return email
 
     def save(self):
@@ -185,3 +203,33 @@ class UserEditProfileForm(UserBaseForm):
 
         self.user.save()
         return self.user
+
+
+class UserDeleteAccountForm(forms.Form):
+    username = forms.CharField(
+        max_length=30,
+        validators=[UsernameValidator()],
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Enter your username',
+            'class': 'field',
+            'autocomplete': 'username',
+        }),
+        error_messages={
+            'required': 'Username is required.',
+        },
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        return super().__init__(*args, **kwargs)
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+
+        if username and self.user.username != username:
+            raise forms.ValidationError('You tried to delete your account with a wrong username.')
+
+        return username
+
+    def save(self):
+        self.user.delete()

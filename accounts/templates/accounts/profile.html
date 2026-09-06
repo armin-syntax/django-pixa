@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load account_tags %}
+{% load photo_tags %}
 
 {% block title %}{{ user.full_name }}{% endblock %}
 
@@ -84,7 +85,29 @@
             <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
             <div class="card-menu-dropdown">
               <a href="{{ photo.image.url }}">Download</a>
-              <a href="{{ photo.get_delete_url }}?next={{ request.path }}" class="delete-photo-link">Delete</a>
+              {% if request.user.is_authenticated %}
+                {% is_liked_by request.user photo as is_liked %}
+                {% if is_liked %}
+                  <a href="{{ photo.get_unlike_url }}?next={{ request.path }}">Unlike</a>
+                {% else %}
+                  <a href="{{ photo.get_like_url }}?next={{ request.path }}">Like</a>
+                {% endif %}
+
+                {% is_saved_by request.user photo as is_saved %}
+                {% if is_saved %}
+                  <a href="{{ photo.get_unsave_url }}?next={{ request.path }}">Unsave</a>
+                {% else %}
+                  <a href="{{ photo.get_save_url }}?next={{ request.path }}">Save</a>
+                {% endif %}
+
+                {% if request.user == user %}
+                  <a href="{{ photo.get_delete_url }}?next={{ request.path }}" class="delete-photo-link">Delete</a>
+                {% endif %}
+              {% else %}
+
+              <a href="{{ photo.get_like_url }}?next={{ request.path }}">Like</a>
+              <a href="{{ photo.get_save_url }}?next={{ request.path }}">Save</a>
+              {% endif %}
             </div>
           </div>
           <div class="card-overlay">

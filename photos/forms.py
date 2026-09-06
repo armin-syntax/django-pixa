@@ -13,6 +13,9 @@ class PhotoUploadForm(forms.Form):
             'placeholder': 'Give your photo a title',
             'maxlength': '100',
         }),
+        error_messages={
+            'required': 'Title is required.',
+        },
     )
     caption = forms.CharField(
         max_length=200,

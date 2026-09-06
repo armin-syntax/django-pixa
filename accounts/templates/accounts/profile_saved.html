@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load account_tags %}
+{% load photo_tags %}
 
 {% block title %}Saved Photos{% endblock %}
 
@@ -40,24 +40,15 @@
     </div>
 
     <div class="profile-actions">
-      {% if request.user == user %}
-        <details class="settings-menu">
-          <summary class="btn btn-outline">Settings</summary>
-          <div class="settings-panel">
-            <a href="{% url 'accounts:user-logout' %}">Log out</a>
-            <a href="{{ user.get_edit_profile_url }}">Edit profile</a>
-            <a href="{{ user.get_delete_account_url }}" class="delete-link">Delete account</a>
-          </div>
-        </details>
-        <a href="{% url 'photos:photo-upload' %}" class="btn btn-outline">Upload</a>
-      {% else %}
-        {% is_followed_by request.user user as is_following %}
-        {% if is_following %}
-          <a href="{{ user.get_unfollow_url }}" class="btn btn-red follow-action">Unfollow</a>
-        {% else %}
-          <a href="{{ user.get_follow_url }}" class="btn btn-red follow-action">Follow</a>
-        {% endif %}
-      {% endif %}
+      <details class="settings-menu">
+        <summary class="btn btn-outline">Settings</summary>
+        <div class="settings-panel">
+          <a href="{% url 'accounts:user-logout' %}">Log out</a>
+          <a href="{{ user.get_edit_profile_url }}">Edit profile</a>
+          <a href="{{ user.get_delete_account_url }}" class="delete-link">Delete account</a>
+        </div>
+      </details>
+      <a href="{% url 'photos:photo-upload' %}" class="btn btn-outline">Upload</a>
     </div>
   </section>
 
@@ -80,6 +71,12 @@
             <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
             <div class="card-menu-dropdown">
               <a href="{{ photo.image.url }}">Download</a>
+              {% is_liked_by request.user photo as is_liked %}
+              {% if is_liked %}
+                <a href="{{ photo.get_unlike_url }}?next={{ request.path }}">Unlike</a>
+              {% else %}
+                <a href="{{ photo.get_like_url }}?next={{ request.path }}">Like</a>
+              {% endif %}
               <a href="{{ photo.get_unsave_url }}?next={{ request.path }}" class="remove-photo-link">Remove</a>
             </div>
           </div>

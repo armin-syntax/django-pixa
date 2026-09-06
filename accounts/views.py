@@ -7,7 +7,7 @@ from django.views import View
 from utils.mixins import AnonymousRequiredMixin, SelfForbiddenMixin, OwnerRequiredMixin
 from utils.pagination import get_pagination_context
 from .models import Relation
-from .forms import UserRegisterForm, UserLoginForm, UserEditProfileForm
+from .forms import UserRegisterForm, UserLoginForm, UserEditProfileForm, UserDeleteAccountForm
 
 
 User = get_user_model()
@@ -156,9 +156,19 @@ class UserDeleteAvatarView(LoginRequiredMixin, OwnerRequiredMixin, View):
 
 class UserDeleteAccountView(LoginRequiredMixin, OwnerRequiredMixin, View):
     template_name = 'accounts/delete_account.html'
+    form_class = UserDeleteAccountForm
 
     def get(self, request, **kwargs):
-        return render(request, self.template_name)
+        return render(request, self.template_name, {'form': self.form_class()})
+
+    def post(self, request, **kwargs):
+        form = self.form_class(request.POST, user=request.user)
+
+        if not form.is_valid():
+            return render(request, self.template_name, {'form': form})
+
+        form.save()
+        return redirect('photos:photos')
 
 
 class UserFollowView(LoginRequiredMixin, SelfForbiddenMixin, View):

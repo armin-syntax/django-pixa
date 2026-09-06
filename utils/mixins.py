@@ -40,5 +40,5 @@ class PhotoOwnerRequiredMixin(AccessMixin):
         photo = get_object_or_404(Photo, slug=kwargs['slug'])
 
         if request.user != photo.user:
-            return redirect('photos:photos')
+            return redirect(photo.get_absolute_url())
         return super().dispatch(request, *args, **kwargs)

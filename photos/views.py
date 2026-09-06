@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
+from utils.mixins import PhotoOwnerRequiredMixin
 from utils.pagination import get_pagination_context
 from .models import Tag, Photo, Like, Save
 from .forms import PhotoUploadForm
@@ -83,7 +84,7 @@ class PhotoUploadView(LoginRequiredMixin, View):
         return redirect(photo.get_absolute_url())
 
 
-class PhotoDeleteView(LoginRequiredMixin, View):
+class PhotoDeleteView(LoginRequiredMixin, PhotoOwnerRequiredMixin, View):
     def get(self, request, **kwargs):
         get_object_or_404(Photo, slug=kwargs['slug']).delete()
 

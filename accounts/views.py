@@ -55,31 +55,11 @@ class UserLoginView(AnonymousRequiredMixin, View):
 
         return redirect('photos:photos')
 
+
 class UserLogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
         return redirect('photos:photos')
-
-
-class UserForgotPasswordView(AnonymousRequiredMixin, View):
-    template_name = 'accounts/forgot_password.html'
-
-    def get(self, request):
-        return render(request, self.template_name)
-
-
-class UserVerifyCodeView(AnonymousRequiredMixin, View):
-    template_name = 'accounts/verify_code.html'
-
-    def get(self, request):
-        return render(request, self.template_name)
-
-
-class UserResetPasswordView(AnonymousRequiredMixin, View):
-    template_name = 'accounts/reset_password.html'
-
-    def get(self, request):
-        return render(request, self.template_name)
 
 
 class UserProfileView(View):

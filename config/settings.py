@@ -135,19 +135,32 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+# ---- Custom User Model ----
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
+# ---- In Development ----
 MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
 
+# ---- In Production
+# MAILERS = {
+#     'default': {
+#         'BACKEND': 'django.core.mail.backends.smtp.EmailBackend',
+#         'OPTIONS': {
+#             'host': 'smtp.service.com',
+#             'port': 587,
+#             'use_tls': True,
+#             'username': 'your-username',
+#             'password': 'your-password',
+#         },
+#     },
+# }
 
-# ----------------------------------
-# My Config
-
-AUTH_USER_MODEL = 'accounts.CustomUser'
-
-# ----------------------------------
+PASSWORD_RESET_TIMEOUT = 86400  # 24 ساعت

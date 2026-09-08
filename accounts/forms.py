@@ -227,7 +227,7 @@ class UserDeleteAccountForm(forms.Form):
         username = self.cleaned_data.get('username')
 
         if username and self.user.username != username:
-            raise forms.ValidationError('You tried to delete your account with a wrong username.')
+            raise forms.ValidationError('You tried to delete your account with the wrong username.')
 
         return username
 

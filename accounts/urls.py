@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 
 from . import views
 
@@ -8,9 +9,40 @@ urlpatterns = [
     path('register/', views.UserRegisterView.as_view(), name='user-register'),
     path('login/', views.UserLoginView.as_view(), name='user-login'),
     path('logout/', views.UserLogoutView.as_view(), name='user-logout'),
-    path('forgot-password/', views.UserForgotPasswordView.as_view(), name='user-forgot-password'),
-    path('verify-code/', views.UserVerifyCodeView.as_view(), name='user-verify-code'),
-    path('reset-password/', views.UserResetPasswordView.as_view(), name='user-reset-password'),
+
+    # ----------------------------------------------------
+    # Password Reset (with Django Auth Views)
+
+    path('forgot-password/', 
+         auth_views.PasswordResetView.as_view(
+             template_name='accounts/forgot_password.html',
+             email_template_name='accounts/password_reset_email.html',
+             subject_template_name='accounts/password_reset_subject.txt',
+             success_url='/accounts/reset-password-done/'
+         ),
+         name='user-forgot-password'),
+    
+    path('reset-password-done/',
+         auth_views.PasswordResetDoneView.as_view(
+             template_name='accounts/reset_password_done.html'
+         ),
+         name='user-reset-password-done'),
+    
+    path('reset-password-confirm/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(
+             template_name='accounts/reset_password_confirm.html',
+             success_url='/accounts/reset-password-complete/'
+         ),
+         name='user-reset-password-confirm'),
+    
+    path('reset-password-complete/',
+         auth_views.PasswordResetCompleteView.as_view(
+             template_name='accounts/reset_password_complete.html'
+         ),
+         name='user-reset-password-complete'),
+
+    # ----------------------------------------------------
+
     path('<username>/', views.UserProfileView.as_view(), name='user-profile'),
     path('<username>/about/', views.UserProfileAboutView.as_view(), name='user-profile-about'),
     path('<username>/saved-photos/', views.UserSavedPhotosView.as_view(), name='user-saved-photos'),

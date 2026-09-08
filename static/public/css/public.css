@@ -905,6 +905,7 @@ textarea.field {
 
 .empty {
   /* Box Model */
+  margin: 1rem 0;
   padding: 5rem 1.25rem;
 
   /* Box Model - Border */

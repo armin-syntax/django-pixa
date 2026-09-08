@@ -1,15 +1,15 @@
-{% if page_obj %}
+{% if page_obj and page_obj.paginator.num_pages > 1 %}
   <nav aria-label="Pagination" class="pagination">
     {% if page_obj.has_previous %}
       <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous page">←</a>
     {% endif %}
 
     {% for num in page_obj.paginator.page_range %}
-        {% if page_obj.number == num %}
-          <a href="?page={{ num }}" class="active">{{ num }}</a>
-        {% else %}
-            <a href="?page={{ num }}" class="">{{ num }}</a>
-        {% endif %}
+      {% if page_obj.number == num %}
+        <a href="?page={{ num }}" class="active">{{ num }}</a>
+      {% else %}
+        <a href="?page={{ num }}">{{ num }}</a>
+      {% endif %}
     {% endfor %}
 
     {% if page_obj.has_next %}

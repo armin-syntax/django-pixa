@@ -75,31 +75,36 @@
 
   <section class="related">
     <h2>Related photos</h2>
-    <div class="masonry">
-      {% for r_photo in related_photos %}
-        <article class="card">
-          <a href="{{ r_photo.get_absolute_url }}" class="card-link">
-            <img
-              alt="{{ r_photo.title }}"
-              loading="lazy"
-              src="{{ r_photo.image.url }}"
-            />
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="{{ r_photo.image.url }}">Download</a>
+    
+    {% if related_photos %}
+      <div class="masonry">
+        {% for r_photo in related_photos %}
+          <article class="card">
+            <a href="{{ r_photo.get_absolute_url }}" class="card-link">
+              <img
+                alt="{{ r_photo.title }}"
+                loading="lazy"
+                src="{{ r_photo.image.url }}"
+              />
+            </a>
+            <div class="card-menu">
+              <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
+              <div class="card-menu-dropdown">
+                <a href="{{ r_photo.image.url }}">Download</a>
+              </div>
             </div>
-          </div>
-          <div class="card-overlay">
-            <div>
-              <a href="{{ r_photo.get_absolute_url }}" class="card-title">{{ r_photo.title }}</a>
-              <a href="{{ r_photo.user.get_profile_url }}" class="card-author">by {{ r_photo.user.username }}</a>
+            <div class="card-overlay">
+              <div>
+                <a href="{{ r_photo.get_absolute_url }}" class="card-title">{{ r_photo.title }}</a>
+                <a href="{{ r_photo.user.get_profile_url }}" class="card-author">by {{ r_photo.user.username }}</a>
+              </div>
             </div>
-          </div>
-        </article>
-      {% endfor %}
-    </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="empty">No related photos found</p>
+    {% endif %}
   </section>
 </main>
 

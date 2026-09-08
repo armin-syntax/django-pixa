@@ -61,34 +61,43 @@
   </nav>
 
   {% with photos=page_obj %}
-    <div class="masonry">
-      {% for photo in photos %}
-        <article class="card">
-          <a class="card-link" href="{{ photo.get_absolute_url }}">
-            <img alt="{{ photo.title }}" loading="lazy" src="{{ photo.image.url }}">
-          </a>
-          <div class="card-menu">
-            <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
-            <div class="card-menu-dropdown">
-              <a href="{{ photo.image.url }}">Download</a>
-              {% is_liked_by request.user photo as is_liked %}
-              {% if is_liked %}
-                <a href="{{ photo.get_unlike_url }}?next={{ request.path }}">Unlike</a>
-              {% else %}
-                <a href="{{ photo.get_like_url }}?next={{ request.path }}">Like</a>
-              {% endif %}
-              <a href="{{ photo.get_unsave_url }}?next={{ request.path }}" class="remove-photo-link">Remove</a>
+    {% if photos %}
+      <div class="masonry">
+        {% for photo in photos %}
+          <article class="card">
+            <a class="card-link" href="{{ photo.get_absolute_url }}">
+              <img alt="{{ photo.title }}" loading="lazy" src="{{ photo.image.url }}">
+            </a>
+            <div class="card-menu">
+              <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
+              <div class="card-menu-dropdown">
+                <a href="{{ photo.image.url }}">Download</a>
+                {% is_liked_by request.user photo as is_liked %}
+                {% if is_liked %}
+                  <a href="{{ photo.get_unlike_url }}?next={{ request.path }}">Unlike</a>
+                {% else %}
+                  <a href="{{ photo.get_like_url }}?next={{ request.path }}">Like</a>
+                {% endif %}
+                <a href="{{ photo.get_unsave_url }}?next={{ request.path }}" class="remove-photo-link">Remove</a>
+              </div>
             </div>
-          </div>
-          <div class="card-overlay">
-            <div class="card-bottom-box">
-              <a class="card-title" href="{{ photo.get_absolute_url }}">{{ photo.title }}</a>
-              <a class="card-author" href="{{ photo.user.get_profile_url }}">by {{ photo.user.username }}</a>
+            <div class="card-overlay">
+              <div class="card-bottom-box">
+                <a class="card-title" href="{{ photo.get_absolute_url }}">{{ photo.title }}</a>
+                <a class="card-author" href="{{ photo.user.get_profile_url }}">by {{ photo.user.username }}</a>
+              </div>
             </div>
-          </div>
-        </article>
-      {% endfor %}
-    </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty">
+        <p>
+          No saved photos yet <br>
+          Start saving photos you love to see them here
+        </p>
+      </div>
+    {% endif %}
 
     {% include 'includes/pagination.html' %}
   {% endwith %}

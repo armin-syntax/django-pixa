@@ -16,11 +16,20 @@
     <p>Browse photos by the ideas, places, moods and subjects people use to describe them.</p>
   </section>
 
-  <nav aria-label="All photo tags" class="tag-cloud">
-    {% for tag in tags %}
-      <a href="{% url 'photos:photos' %}?tag={{ tag.slug }}" class="tag-link">{{ tag.name }}</a>
-    {% endfor %}
-  </nav>
+  {% if tags %}
+    <nav aria-label="All photo tags" class="tag-cloud">
+      {% for tag in tags %}
+        <a href="{% url 'photos:photos' %}?tag={{ tag.slug }}" class="tag-link">{{ tag.name }}</a>
+      {% endfor %}
+    </nav>
+  {% else %}
+    <div class="empty">
+      <p>
+        No tags available <br>
+        Tags will appear here as they are added to photos
+      </p>
+    </div>
+  {% endif %}
 </main>
 
 {% endblock %}

@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
+from django.db.models import Q, F, Count, DurationField, IntegerField
+from django.db.models.functions import Cast, Now
+from django.db.models.expressions import ExpressionWrapper
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
@@ -31,6 +33,28 @@ class PhotosView(View):
             selected_tag = request.GET['tag']
             photos = photos.filter(tags__slug=selected_tag)
 
+        photos = photos.annotate(
+            like_count=Count('likes', distinct=True),
+            save_count=Count('saves', distinct=True),
+            days_since_created=ExpressionWrapper(
+                Now() - F('created_at'),
+                output_field=DurationField()
+            )
+        )
+
+        WEIGHT_LIKE = 1.0
+        WEIGHT_SAVE = 1.5
+        WEIGHT_AGE = 0.5
+
+        photos = photos.annotate(
+            score=(
+                (F('like_count') * WEIGHT_LIKE) +
+                (F('save_count') * WEIGHT_SAVE)
+            ) / (Cast(F('days_since_created'), IntegerField()) + WEIGHT_AGE)
+        )
+
+        photos = photos.order_by('-score', '-created_at')
+
         return render(request, self.template_name, {
             'tags': tags,
             'page_obj': get_pagination_context(request, photos, 20),
@@ -52,9 +76,26 @@ class PhotoDetailView(View):
 
     def get(self, request, **kwargs):
         photo = get_object_or_404(Photo, slug=kwargs['slug'])
+        related_photos = self.get_related_photos(photo)
+
         return render(request, self.template_name, {
             'photo': photo,
+            'related_photos': related_photos,
         })
+
+    def get_related_photos(self, photo, limit=8):
+        tags = photo.tags.all()
+
+        return Photo.objects.filter(
+            tags__in=tags,
+        ).exclude(
+            pk=photo.pk,
+        ).annotate(
+            common_tags_count=Count('tags'),
+        ).order_by(
+            '-common_tags_count',
+            '-created_at',
+        ).distinct()[:limit]
 
 
 class PhotoUploadView(LoginRequiredMixin, View):

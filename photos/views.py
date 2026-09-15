@@ -1,7 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q, F, Count, DurationField, IntegerField
-from django.db.models.functions import Cast, Now
-from django.db.models.expressions import ExpressionWrapper
+from django.db.models import Q, F, Count
+from django.db.models.functions import Now, Extract
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
@@ -36,9 +35,9 @@ class PhotosView(View):
         photos = photos.annotate(
             like_count=Count('likes', distinct=True),
             save_count=Count('saves', distinct=True),
-            days_since_created=ExpressionWrapper(
+            days_since_created=Extract(
                 Now() - F('created_at'),
-                output_field=DurationField()
+                'days'
             )
         )
 
@@ -50,7 +49,7 @@ class PhotosView(View):
             score=(
                 (F('like_count') * WEIGHT_LIKE) +
                 (F('save_count') * WEIGHT_SAVE)
-            ) / (Cast(F('days_since_created'), IntegerField()) + WEIGHT_AGE)
+            ) / (F('days_since_created') + WEIGHT_AGE)
         )
 
         photos = photos.order_by('-score', '-created_at')

@@ -80,7 +80,6 @@ Pixa currently includes:
 * Django Authentication
 * Django Templates
 * Django ORM
-* SQLite / PostgreSQL
 
 ### **Frontend**
 
@@ -88,39 +87,60 @@ Pixa currently includes:
 * CSS3
 * Vanilla JavaScript
 
+The project does not require a frontend framework such as React or Vue.
+
+Django handles the server-side rendering, authentication, database interaction, and application logic.
+
+### **Database**
+
+* SQLite for development
+* PostgreSQL for production
+
+### **Deployment**
+
+* Docker
+* Docker Compose
+* Gunicorn
+* Nginx
+* PostgreSQL
+
 ### **Development**
 
 * Git
 * GitHub
 
-The project does not require a frontend framework such as React or Vue.
-
-Django handles the server-side rendering, authentication, database interaction, and application logic.
-
 ## **🏗 Architecture**
 
 Pixa follows a traditional Django server-rendered architecture.
+
+### **Development**
 
 ```text
 Browser
    │
    ▼
+Django Development Server
+   │
+   ▼
+SQLite
+```
+
+### **Production**
+
+```text
+Browser
+   │
+   ▼
+Nginx
+   │
+   ▼
+Gunicorn
+   │
+   ▼
 Django
    │
-   ├── URLs
-   │
-   ├── Views
-   │
-   ├── Templates
-   │
-   ├── Forms
-   │
-   ├── Models
-   │
-   └── Authentication
-          │
-          ▼
-       Database
+   ▼
+PostgreSQL
 ```
 
 ## **🔐 Authentication**
@@ -191,13 +211,13 @@ Authenticated users can upload photos with information such as:
 
 ```text
 Photo
-├── Image
-├── Title
-├── Caption
-├── Author
-├── Tags
-├── Created At
-└── Updated At
+ ├── Image
+ ├── Title
+ ├── Caption
+ ├── Author
+ ├── Tags
+ ├── Created At
+ └── Updated At
 ```
 
 The upload functionality is restricted to authenticated users.
@@ -232,14 +252,25 @@ A quick look at the main Pixa interfaces.
 
 ## **🚀 Getting Started**
 
-### **1. Clone the repository**
+There are two ways to run Pixa during development:
+
+1. Traditional Django setup
+2. Docker development setup
+
+For production, Pixa uses a pre-built Docker image published on Docker Hub.
+
+---
+
+### **Option 1 — Traditional Django Setup**
+
+#### **1. Clone the repository**
 
 ```bash
-git clone https://github.com/armin-syntax/pixa.git
-cd pixa
+git clone https://github.com/armin-syntax/django-pixa.git
+cd django-pixa
 ```
 
-### **2. Create a virtual environment**
+#### **2. Create a virtual environment**
 
 ```bash
 python3 -m venv venv
@@ -257,25 +288,25 @@ On Windows:
 venv\Scripts\activate
 ```
 
-### **3. Install dependencies**
+#### **3. Install dependencies**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### **4. Apply migrations**
+#### **4. Run migrations**
 
 ```bash
 python manage.py migrate
 ```
 
-### **5. Create a superuser**
+#### **5. Create a superuser**
 
 ```bash
 python manage.py createsuperuser
 ```
 
-### **6. Run the development server**
+#### **6. Run the development server**
 
 ```bash
 python manage.py runserver
@@ -287,22 +318,218 @@ Then open:
 http://127.0.0.1:8000/
 ```
 
+---
+
+### **Option 2 — Docker Development**
+
+The Docker development setup builds the image locally and mounts the project source code into the container.
+
+This allows source-code changes to be reflected without rebuilding the image.
+
+From the project root:
+
+```bash
+docker compose -f docker-compose.development.yml up --build
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8000/
+```
+
+The development Docker environment uses:
+
+* Django development server
+* SQLite
+* Local source-code bind mount
+* Django automatic code reloading
+
+To stop the development environment:
+
+```bash
+docker compose -f docker-compose.development.yml down
+```
+
+## **🐳 Docker Production**
+
+The production setup uses a pre-built Docker image published on Docker Hub.
+
+### **Docker Image**
+
+```text
+arminsyntax/django-pixa:1.0.0
+```
+
+### **Docker Hub**
+
+The Pixa production image is available on Docker Hub:
+
+```text
+https://hub.docker.com/r/arminsyntax/django-pixa
+```
+
+### **Production Configuration**
+
+The production Docker Compose configuration and environment template are maintained in the GitHub repository.
+
+The repository provides:
+
+* `docker-compose.production.yml`
+* `.env.example`
+* Nginx configuration
+* Project documentation
+
+### **1. Clone the repository**
+
+```bash
+git clone https://github.com/armin-syntax/django-pixa.git
+cd django-pixa
+```
+
+### **2. Create the environment file**
+
+The repository contains `.env.example` with the required production environment variables.
+
+Create your local `.env` file:
+
+```bash
+cp .env.example .env
+```
+
+Then update `.env` with values appropriate for your environment.
+
+**Never commit `.env` or other files containing real secrets to the repository.**
+
+### **3. Pull the production image**
+
+```bash
+docker pull arminsyntax/django-pixa:1.0.0
+```
+
+### **4. Start the production environment**
+
+```bash
+docker compose -f docker-compose.production.yml up -d
+```
+
+### **5. Check the running containers**
+
+```bash
+docker compose -f docker-compose.production.yml ps
+```
+
+### **6. View logs**
+
+```bash
+docker compose -f docker-compose.production.yml logs -f
+```
+
+### **7. Stop the production environment**
+
+```bash
+docker compose -f docker-compose.production.yml down
+```
+
+## **🏗️ Production Stack**
+
+The production environment consists of:
+
+```text
+                    Browser
+                       │
+                       ▼
+                     Nginx
+                       │
+                       ▼
+                   Gunicorn
+                       │
+                       ▼
+                    Django
+                       │
+                       ▼
+                  PostgreSQL
+```
+
+Docker Compose manages the application containers and persistent volumes.
+
+The production environment uses persistent Docker volumes for:
+
+* PostgreSQL data
+* Static files
+* Uploaded media files
+
+## **📦 GitHub and Docker Hub**
+
+The project separates application source code from the published production image.
+
+### **GitHub**
+
+The GitHub repository contains the source code and deployment configuration:
+
+```text
+GitHub
+│
+├── Django source code
+├── docker-compose.development.yml
+├── docker-compose.production.yml
+├── .env.example
+├── Nginx configuration
+├── requirements.txt
+├── screenshots
+├── README.md
+└── LICENSE
+```
+
+### **Docker Hub**
+
+Docker Hub contains the published production image:
+
+```text
+Docker Hub
+│
+└── arminsyntax/django-pixa:1.0.0
+       │
+       └── Pixa Django application
+```
+
+When using the published production image, there is no need to build the Django application image locally.
+
+The deployment configuration is obtained from GitHub, while the application image is pulled from Docker Hub.
+
 ## **⚙️ Configuration**
 
-For development, Django's default configuration can be used.
+For development, Pixa uses SQLite and development-specific Django settings.
 
-For production, make sure to properly configure:
+For production, configuration is provided through environment variables.
+
+Important production settings include:
 
 * `SECRET_KEY`
 * `DEBUG`
 * `ALLOWED_HOSTS`
-* Database
+* `CSRF_TRUSTED_ORIGINS`
+* Database configuration
 * Static files
 * Media files
 * Email configuration
 * Security settings
 
 Sensitive configuration values should be stored in environment variables rather than committed to the repository.
+
+The provided `.env.example` file documents the required production environment variables without containing real secrets.
+
+## **🔄 Application Startup**
+
+The production Docker container performs the required Django initialization steps when it starts.
+
+The startup process includes:
+
+1. Running database migrations
+2. Collecting static files
+3. Starting the application server
+
+Gunicorn is used as the production application server.
 
 ## **🧪 Development**
 
@@ -318,6 +545,115 @@ Django
 ```
 
 This approach keeps the application straightforward and makes it suitable for learning, experimentation, and further development.
+
+### **Development vs Production**
+
+#### Development
+
+```text
+Local Source Code
+       │
+       ▼
+Docker Build
+       │
+       ▼
+Django Development Server
+       │
+       ▼
+SQLite
+```
+
+#### Production
+
+```text
+Docker Hub Image
+       │
+       ▼
+Docker Container
+       │
+       ├── Gunicorn
+       │
+       └── Django
+              │
+              ▼
+          PostgreSQL
+
+Nginx
+   │
+   └── Reverse Proxy → Gunicorn
+```
+
+Production images are versioned using Docker tags.
+
+Application changes require building and publishing a new image version before deploying that version to production.
+
+## **🏷️ Docker Image Tags**
+
+The production image uses versioned Docker tags.
+
+Current version:
+
+```text
+1.0.0
+```
+
+Pull the current version with:
+
+```bash
+docker pull arminsyntax/django-pixa:1.0.0
+```
+
+Future releases can use additional versioned tags such as:
+
+```text
+1.1.0
+2.0.0
+```
+
+Versioned tags make it possible to deploy a specific application version and use an earlier version when necessary.
+
+## **🌐 Using Pixa on Another Machine**
+
+The published production image can be used on another Docker host without building the Django application from source.
+
+The target machine needs:
+
+* Docker
+* Docker Compose
+* The Pixa GitHub repository
+* `.env`
+* `docker-compose.production.yml`
+* Nginx configuration
+
+Then:
+
+```bash
+git clone https://github.com/armin-syntax/django-pixa.git
+cd django-pixa
+
+cp .env.example .env
+
+docker pull arminsyntax/django-pixa:1.0.0
+
+docker compose -f docker-compose.production.yml up -d
+```
+
+The same production image can later be used on a VPS.
+
+Server-specific configuration such as domain names, HTTPS/TLS certificates, and server-specific Nginx configuration should remain outside the Docker image.
+
+## **🔐 Security**
+
+Do not place real secrets inside the Docker image or commit them to GitHub.
+
+Use environment variables for sensitive configuration such as:
+
+* Django `SECRET_KEY`
+* Database credentials
+* Email credentials
+* Other environment-specific values
+
+The `.env.example` file is provided as a configuration template.
 
 ## **🔮 Future Improvements**
 
@@ -335,9 +671,6 @@ Possible future improvements include:
 * Comments
 * Image optimization
 * Cloud media storage
-* PostgreSQL in production
-* Docker support
-* Nginx + Gunicorn deployment
 * Automated tests
 * CI/CD with GitHub Actions
 
@@ -373,7 +706,7 @@ When contributing, please try to keep the code simple, readable, and consistent 
 
 ## **📄 License**
 
-This project is open source.
+This project is open source and licensed under the MIT License.
 
 See the [`LICENSE`](LICENSE) file for the exact terms and conditions.
 

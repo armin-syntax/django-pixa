@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import connection
 from django.db.models import Q, F, Count
 from django.db.models.functions import Now, Extract
 from django.shortcuts import render, redirect, get_object_or_404
@@ -32,27 +33,28 @@ class PhotosView(View):
             selected_tag = request.GET['tag']
             photos = photos.filter(tags__slug=selected_tag)
 
-        photos = photos.annotate(
-            like_count=Count('likes', distinct=True),
-            save_count=Count('saves', distinct=True),
-            days_since_created=Extract(
-                Now() - F('created_at'),
-                'days'
+        if connection.vendor == 'postgresql':
+            photos = photos.annotate(
+                like_count=Count('likes', distinct=True),
+                save_count=Count('saves', distinct=True),
+                days_since_created=Extract(
+                    Now() - F('created_at'),
+                    'days'
+                )
             )
-        )
 
-        WEIGHT_LIKE = 1.0
-        WEIGHT_SAVE = 1.5
-        WEIGHT_AGE = 0.5
+            WEIGHT_LIKE = 1.0
+            WEIGHT_SAVE = 1.5
+            WEIGHT_AGE = 0.5
 
-        photos = photos.annotate(
-            score=(
-                (F('like_count') * WEIGHT_LIKE) +
-                (F('save_count') * WEIGHT_SAVE)
-            ) / (F('days_since_created') + WEIGHT_AGE)
-        )
+            photos = photos.annotate(
+                score=(
+                    (F('like_count') * WEIGHT_LIKE) +
+                    (F('save_count') * WEIGHT_SAVE)
+                ) / (F('days_since_created') + WEIGHT_AGE)
+            )
 
-        photos = photos.order_by('-score', '-created_at')
+            photos = photos.order_by('-score', '-created_at')
 
         return render(request, self.template_name, {
             'tags': tags,

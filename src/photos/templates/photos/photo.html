@@ -14,10 +14,7 @@
 <main class="container photo-page">
   <section class="photo-layout">
     <div class="photo-image">
-      <img
-        alt="{{ photo.title }}"
-        src="{{ photo.image.url }}"
-      />
+      <img alt="{{ photo.title }}" src="{{ photo.image.url }}"/>
     </div>
 
     <aside class="photo-side">
@@ -91,6 +88,25 @@
               <button class="card-menu-button" type="button" aria-label="Photo options" aria-expanded="false">•••</button>
               <div class="card-menu-dropdown">
                 <a href="{{ r_photo.image.url }}">Download</a>
+
+                {% if request.user.is_authenticated %}
+                  {% is_liked_by request.user photo as is_liked %}
+                  {% if is_liked %}
+                    <a href="{{ photo.get_unlike_url }}?next={{ request.path }}">Unlike</a>
+                  {% else %}
+                    <a href="{{ photo.get_like_url }}?next={{ request.path }}">Like</a>
+                  {% endif %}
+
+                  {% is_saved_by request.user photo as is_saved %}
+                  {% if is_saved %}
+                    <a href="{{ photo.get_unsave_url }}?next={{ request.path }}">Unsave</a>
+                  {% else %}
+                    <a href="{{ photo.get_save_url }}?next={{ request.path }}">Save</a>
+                  {% endif %} 
+                {% else %}
+                  <a href="{{ photo.get_like_url }}?next={{ request.path }}">Like</a>
+                  <a href="{{ photo.get_save_url }}?next={{ request.path }}">Save</a>
+                {% endif %}
               </div>
             </div>
             <div class="card-overlay">

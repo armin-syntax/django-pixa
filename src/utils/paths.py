@@ -7,7 +7,7 @@ from django.conf import settings
 def user_avatar_upload_path(instance, filename):
     extension = os.path.splitext(filename)[1].lower()
     file_name = f'avatar{extension}'
-    file_path = f'accounts/{instance.pk}/{file_name}'
+    file_path = f'accounts/{instance.public_id}/{file_name}'
     full_path = os.path.join(settings.MEDIA_ROOT, file_path)
 
     if os.path.isfile(full_path):
@@ -20,4 +20,4 @@ def photo_upload_path(instance, filename):
     extension = os.path.splitext(filename)[1].lower()
     file_name = f'{uuid.uuid4()}{extension}'
 
-    return f'accounts/{instance.user.pk}/photos/{file_name}'
+    return f'accounts/{instance.user.public_id}/photos/{file_name}'

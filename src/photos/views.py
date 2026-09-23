@@ -8,7 +8,7 @@ from django.views import View
 from utils.mixins import PhotoOwnerRequiredMixin
 from utils.pagination import get_pagination_context
 from .models import Tag, Photo, Like, Save
-from .forms import PhotoUploadForm
+from .forms import PhotoUploadForm, PhotoUpdateForm
 
 
 class PhotosView(View):
@@ -22,12 +22,11 @@ class PhotosView(View):
             search = request.GET['search']
             photos = photos.filter(
                 Q(title__icontains=search) |
-                Q(slug__icontains=search) |
                 Q(caption__icontains=search) |
                 Q(tags__name__icontains=search) |
                 Q(user__username__icontains=search) |
                 Q(user__full_name__icontains=search)
-            )
+            ).distinct()
 
         if request.GET.get('tag'):
             selected_tag = request.GET['tag']
@@ -62,7 +61,7 @@ class PhotosView(View):
         })
 
 
-class TagListView(View):
+class TagsView(View):
     template_name = 'photos/tags.html'
 
     def get(self, request):
@@ -70,33 +69,6 @@ class TagListView(View):
         return render(request, self.template_name, {
             'tags': tags,
         })
-
-
-class PhotoDetailView(View):
-    template_name = 'photos/photo.html'
-
-    def get(self, request, **kwargs):
-        photo = get_object_or_404(Photo, slug=kwargs['slug'])
-        related_photos = self.get_related_photos(photo)
-
-        return render(request, self.template_name, {
-            'photo': photo,
-            'related_photos': related_photos,
-        })
-
-    def get_related_photos(self, photo, limit=8):
-        tags = photo.tags.all()
-
-        return Photo.objects.filter(
-            tags__in=tags,
-        ).exclude(
-            pk=photo.pk,
-        ).annotate(
-            common_tags_count=Count('tags'),
-        ).order_by(
-            '-common_tags_count',
-            '-created_at',
-        ).distinct()[:limit]
 
 
 class PhotoUploadView(LoginRequiredMixin, View):
@@ -126,9 +98,116 @@ class PhotoUploadView(LoginRequiredMixin, View):
         return redirect(photo.get_absolute_url())
 
 
+class PhotoDetailView(View):
+    template_name = 'photos/photo.html'
+
+    def get(self, request, **kwargs):
+        photo = get_object_or_404(Photo, public_id=kwargs['public_id'])
+        related_photos = self.get_related_photos(photo)
+
+        return render(request, self.template_name, {
+            'photo': photo,
+            'related_photos': related_photos,
+        })
+
+    def get_related_photos(self, photo, limit=8):
+        tags = photo.tags.all()
+
+        return Photo.objects.filter(
+            tags__in=tags,
+        ).exclude(
+            pk=photo.pk,
+        ).annotate(
+            common_tags_count=Count('tags'),
+        ).order_by(
+            '-common_tags_count',
+            '-created_at',
+        ).distinct()[:limit]
+
+
+
+
+
+class PhotoUpdateView(LoginRequiredMixin, PhotoOwnerRequiredMixin, View):
+    template_name = 'photos/update.html'
+    form_class = PhotoUpdateForm
+
+    def setup(self, request, *args, **kwargs):
+        self.photo_instance = get_object_or_404(
+            Photo,
+            public_id=kwargs['public_id'],
+        )
+        return super().setup(request, *args, **kwargs)
+
+    def get(self, request, **kwargs):
+        form = self.form_class(
+            initial={
+                'title': self.photo_instance.title,
+                'caption': self.photo_instance.caption,
+                'tags': ','.join(
+                    self.photo_instance.tags.values_list(
+                        'name',
+                        flat=True,
+                    )
+                ),
+            },
+            photo=self.photo_instance,
+        )
+
+        tags = list(
+            Tag.objects.values_list('name', flat=True)
+        )
+
+        selected_tags = list(
+            self.photo_instance.tags.values_list(
+                'name',
+                flat=True,
+            )
+        )
+
+        return render(request, self.template_name, {
+            'form': form,
+            'tags': tags,
+            'selected_tags': selected_tags,
+            'photo': self.photo_instance,
+        })
+
+    def post(self, request, **kwargs):
+        form = self.form_class(
+            request.POST,
+            photo=self.photo_instance,
+        )
+
+        if not form.is_valid():
+            tags = list(
+                Tag.objects.values_list('name', flat=True)
+            )
+
+            selected_tags = list(
+                self.photo_instance.tags.values_list(
+                    'name',
+                    flat=True,
+                )
+            )
+
+            return render(request, self.template_name, {
+                'form': form,
+                'tags': tags,
+                'selected_tags': selected_tags,
+                'photo': self.photo_instance,
+            })
+
+        photo = form.save()
+
+        return redirect(photo.get_absolute_url())
+
+
+
+
+
 class PhotoDeleteView(LoginRequiredMixin, PhotoOwnerRequiredMixin, View):
     def get(self, request, **kwargs):
-        get_object_or_404(Photo, slug=kwargs['slug']).delete()
+        get_object_or_404(Photo, public_id=kwargs['public_id']).delete()
 
         next_url = request.POST.get('next') or request.GET.get('next')
         return redirect(next_url or request.user.get_profile_url())
@@ -136,7 +215,7 @@ class PhotoDeleteView(LoginRequiredMixin, PhotoOwnerRequiredMixin, View):
 
 class PhotoLikeView(LoginRequiredMixin, View):
     def get(self, request, **kwargs):
-        photo = get_object_or_404(Photo, slug=kwargs['slug'])
+        photo = get_object_or_404(Photo, public_id=kwargs['public_id'])
 
         if not Like.objects.filter(photo=photo, user=request.user).exists():
             Like.objects.create(photo=photo, user=request.user)
@@ -147,7 +226,7 @@ class PhotoLikeView(LoginRequiredMixin, View):
 
 class PhotoUnlikeView(LoginRequiredMixin, View):
     def get(self, request, **kwargs):
-        photo = get_object_or_404(Photo, slug=kwargs['slug'])
+        photo = get_object_or_404(Photo, public_id=kwargs['public_id'])
         like = Like.objects.filter(photo=photo, user=request.user)
 
         if like.exists():
@@ -159,7 +238,7 @@ class PhotoUnlikeView(LoginRequiredMixin, View):
 
 class PhotoSaveView(LoginRequiredMixin, View):
     def get(self, request, **kwargs):
-        photo = get_object_or_404(Photo, slug=kwargs['slug'])
+        photo = get_object_or_404(Photo, public_id=kwargs['public_id'])
 
         if not Save.objects.filter(user=request.user, photo=photo).exists():
             Save.objects.create(user=request.user, photo=photo)
@@ -170,7 +249,7 @@ class PhotoSaveView(LoginRequiredMixin, View):
 
 class PhotoUnsaveView(LoginRequiredMixin, View):
     def get(self, request, **kwargs):
-        photo = get_object_or_404(Photo, slug=kwargs['slug'])
+        photo = get_object_or_404(Photo, public_id=kwargs['public_id'])
         save = Save.objects.filter(user=request.user, photo=photo)
 
         if save.exists():

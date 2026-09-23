@@ -102,6 +102,7 @@
                   {% endif %}
 
                   {% if request.user == user %}
+                    <a href="{{ photo.get_update_url }}">Update</a>
                     <a href="{{ photo.get_delete_url }}?next={{ request.path }}" class="delete-photo-link">Delete</a>
                   {% endif %}
                 {% else %}

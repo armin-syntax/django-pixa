@@ -1,4 +1,5 @@
 import os
+import uuid
 
 from django.db import models
 from django.conf import settings
@@ -16,6 +17,11 @@ User = settings.AUTH_USER_MODEL
 
 
 class CustomUser(AbstractUser):
+    public_id = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False,
+    )
     username = models.CharField(
         max_length=30,
         unique=True,

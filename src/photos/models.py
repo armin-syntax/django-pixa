@@ -26,9 +26,7 @@ class Tag(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            generated_slug = f'{slugify(self.name)}-{uuid.uuid4()}'
-            self.slug = generated_slug
-
+            self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
     @property
@@ -37,9 +35,13 @@ class Tag(models.Model):
 
 
 class Photo(models.Model):
+    public_id = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=True,
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='photos')
     title = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=150, unique=True, blank=True)
     caption = models.TextField(max_length=200, blank=True, null=True)
     image = models.ImageField(
         upload_to=photo_upload_path,
@@ -59,13 +61,6 @@ class Photo(models.Model):
     def __str__(self):
         return self.title
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            generated_slug = f'{slugify(self.title)}-{uuid.uuid4()}'
-            self.slug = generated_slug
-
-        super().save(*args, **kwargs)
-
     @property
     def created_since(self):
         return get_time_since(self.created_at)
@@ -81,22 +76,25 @@ class Photo(models.Model):
 
     # ----- URL -----
     def get_absolute_url(self):
-        return reverse('photos:photo-detail', args=[self.slug])
+        return reverse('photos:photo-detail', args=[self.public_id])
+
+    def get_update_url(self):
+        return reverse('photos:photo-update', args=[self.public_id])
 
     def get_delete_url(self):
-        return reverse('photos:photo-delete', args=[self.slug])
+        return reverse('photos:photo-delete', args=[self.public_id])
 
     def get_like_url(self):
-        return reverse('photos:photo-like', args=[self.slug])
+        return reverse('photos:photo-like', args=[self.public_id])
 
     def get_unlike_url(self):
-        return reverse('photos:photo-unlike', args=[self.slug])
+        return reverse('photos:photo-unlike', args=[self.public_id])
 
     def get_save_url(self):
-        return reverse('photos:photo-save', args=[self.slug])
+        return reverse('photos:photo-save', args=[self.public_id])
 
     def get_unsave_url(self):
-        return reverse('photos:photo-unsave', args=[self.slug])
+        return reverse('photos:photo-unsave', args=[self.public_id])
 
 
 class Like(models.Model):

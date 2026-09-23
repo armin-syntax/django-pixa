@@ -1,5 +1,9 @@
+{% load static %}
+
 <header class="topbar">
-  <a href="{% url 'photos:photos' %}" aria-label="Pixa home" class="logo">P</a>
+  <a href="{% url 'photos:photos' %}" aria-label="Pixa home" class="logo">
+    <img src="{% static 'public/images/p_icon.png' %}" alt="Pixa"/>
+  </a>
   
   <form action="{% url 'photos:photos' %}" method="GET" role="search" class="search-form">
     <input

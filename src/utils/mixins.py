@@ -37,7 +37,7 @@ class OwnerRequiredMixin(AccessMixin):
 
 class PhotoOwnerRequiredMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
-        photo = get_object_or_404(Photo, slug=kwargs['slug'])
+        photo = get_object_or_404(Photo, public_id=kwargs['public_id'])
 
         if request.user != photo.user:
             return redirect(photo.get_absolute_url())

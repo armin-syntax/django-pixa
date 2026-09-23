@@ -49,11 +49,7 @@ class UserLoginView(AnonymousRequiredMixin, View):
 
         # messages.success(request, 'Logged in successfully.', 'success')
 
-        next_url = request.GET.get('next')
-        if next_url:
-            return redirect(next_url)
-
-        return redirect('photos:photos')
+        return redirect(request.GET.get('next') or 'photos:photos')
 
 
 class UserLogoutView(LoginRequiredMixin, View):

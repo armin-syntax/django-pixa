@@ -14,11 +14,11 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Photo)
 class PhotoAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'user', 'created_at')
+    list_display = ('title', 'user', 'created_at')
     list_filter = ('created_at', 'user', 'tags')
-    search_fields = ('title', 'slug', 'caption', 'user__username', 'user__email')
-    readonly_fields = ('slug', 'created_at', 'updated_at')
-    fields = ('user', 'title', 'slug', 'caption', 'image', 'tags', 'created_at', 'updated_at')
+    search_fields = ('title', 'caption', 'user__username', 'user__email')
+    readonly_fields = ('created_at', 'updated_at')
+    fields = ('user', 'title', 'caption', 'image', 'tags', 'created_at', 'updated_at')
     filter_horizontal = ('tags',)
 
 

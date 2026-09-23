@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Update Photo{% endblock %}
+
+{% block extra_header %}
+<link href="{% static 'photos/css/upload.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main class="upload-page">
+  <section class="upload-card">
+
+    <div class="upload-heading">
+      <div class="eyebrow">Edit your photo</div>
+      <h1>Update photo</h1>
+      <p>Update the details of your photo.</p>
+    </div>
+
+    <form action="" method="POST" class="upload-form">
+      {% csrf_token %}
+
+      {% if form.errors %}
+        <div class="errors-container">
+          {% for field in form %}
+            {% for error in field.errors %}
+              <div class="alert alert-danger">
+                {{ error }}
+              </div>
+            {% endfor %}
+          {% endfor %}
+
+          {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+              {{ error }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="title">Title</label>
+        {{ form.title }}
+      </div>
+
+      <div class="form-group">
+        <div class="label-row">
+          <label for="caption">Caption</label>
+          <span id="caption-count" class="counter">0 / 200</span>
+        </div>
+
+        {{ form.caption }}
+      </div>
+
+      <div class="form-group">
+        <label for="tag-input">Tags</label>
+
+        <div class="tags-input">
+          <div id="selected-tags" class="selected-tags"></div>
+
+          <input
+            id="tag-input"
+            type="text"
+            placeholder="Add a tag..."
+            autocomplete="off"
+          >
+        </div>
+
+        <div id="tag-suggestions" class="tag-suggestions"></div>
+
+        {{ form.tags }}
+      </div>
+
+      <div class="upload-actions">
+        <a
+          href="{{ photo.get_absolute_url }}"
+          class="btn btn-outline"
+        >
+          Cancel
+        </a>
+
+        <button
+          type="submit"
+          class="btn btn-red"
+        >
+          Update photo
+        </button>
+      </div>
+
+    </form>
+  </section>
+</main>
+
+{{ tags|json_script:"tags-data" }}
+{{ selected_tags|json_script:"selected-tags-data" }}
+
+{% block extra_js %}
+<script src="{% static 'photos/js/update.js' %}"></script>
+{% endblock %}
+
+{% endblock %}

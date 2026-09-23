@@ -125,9 +125,6 @@ class PhotoDetailView(View):
         ).distinct()[:limit]
 
 
-
-
-
 class PhotoUpdateView(LoginRequiredMixin, PhotoOwnerRequiredMixin, View):
     template_name = 'photos/update.html'
     form_class = PhotoUpdateForm

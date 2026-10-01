@@ -199,9 +199,6 @@ class PhotoUpdateView(LoginRequiredMixin, PhotoOwnerRequiredMixin, View):
         return redirect(photo.get_absolute_url())
 
 
-
-
-
 class PhotoDeleteView(LoginRequiredMixin, PhotoOwnerRequiredMixin, View):
     def get(self, request, **kwargs):
         get_object_or_404(Photo, public_id=kwargs['public_id']).delete()
